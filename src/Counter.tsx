@@ -7,7 +7,7 @@ import { Inject } from './lib/ReduxInject';
 import { CounterComponent } from './CounterComponent';
 
 class ModelProps {
-  @Inject(CounterModel) counterModel: ICounter;
+  @Inject(CounterModel) counterModel?: ICounter;
 }
 
 @Connection({
