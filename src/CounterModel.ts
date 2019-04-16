@@ -1,7 +1,7 @@
 import { ICounter } from './interface/ICounter';
 import { Model, Action } from './lib';
 
-@Model()
+@Model
 export class CounterModel implements ICounter {
   counter = 0;
   

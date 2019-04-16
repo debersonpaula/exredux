@@ -1,21 +1,24 @@
 import * as React from 'react';
 import { Connection } from './lib';
 import { appModels } from './AppModels';
+import { CounterModel } from './CounterModel';
+import { ICounter } from './interface/ICounter';
+import { Inject } from './lib/ReduxInject';
+import { CounterComponent } from './CounterComponent';
+
+class ModelProps {
+  @Inject(CounterModel) counterModel: ICounter;
+}
 
 @Connection({
   modelViewer: appModels,
-  // models
+  props: ModelProps
 })
-export class Counter extends React.Component<any> {
-  componentDidMount() {
-    console.log('Counter', this.props);
-  }
-  public render() {
-    // return <CounterContainer logic={this.props.logic} />
-    return <div>X</div>
+export class Counter extends React.Component<ModelProps> {
+  render() {
+    const { counterModel } = this.props;
+    return (
+      <CounterComponent counter={counterModel.counter} add={counterModel.add} />
+    );
   }
 }
-
-// export const CounterConnected = connect(
-//   (state: any) => ({logic: state.CounterModel}),
-// )(Counter);

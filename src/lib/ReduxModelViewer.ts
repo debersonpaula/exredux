@@ -1,7 +1,7 @@
 import { Store, createStore as reduxCreateStore, combineReducers } from 'redux';
-import { ReduxModelInstance, createModels } from './helpers/createModels';
-import { getComponentProps, ComponentProps } from './ReduxAction';
-
+import { DECORATOR_REDUX_MODEL } from './Types';
+import { ComponentProps } from './helpers/objectProperties';
+import { getActionProperties } from './ReduxAction';
 // ----------------------------------------------------------------------------
 // --- INTERFACE --------------------------------------------------------------
 // ----------------------------------------------------------------------------
@@ -21,13 +21,18 @@ interface IReduxModelViewerParams {
    */
   models?: any[];
 }
+
+class ReduxModelInstance {
+  name: string;
+  component: any;
+}
 // ----------------------------------------------------------------------------
 // --- COMPONENT --------------------------------------------------------------
 // ----------------------------------------------------------------------------
 export class ModelViewer {
   private options: IReduxModelViewerParams;
   private _store: Store;
-  public _models: ReduxModelInstance[];
+  private _models: ReduxModelInstance[];
 
   constructor(param: IReduxModelViewerParams) {
     this.options = param;
@@ -41,15 +46,19 @@ export class ModelViewer {
     }
     // -----------------------------------------------------
     // create models
-    this._models = createModels(this.options.models);
-    console.info('>> _models', this._models);
+    this._models = this.options.models.map(item => {
+      return {
+        name: Reflect.getMetadata(DECORATOR_REDUX_MODEL, item),
+        component: new item()
+      };
+    });
     // -----------------------------------------------------
     // generate dispatchers
     this._models.forEach((model) => {
       // get constructor
       const actionConstructor = model.component.constructor;
       // extract props name from action
-      const actionProps: ComponentProps = getComponentProps(actionConstructor);
+      const actionProps: ComponentProps = getActionProperties(actionConstructor);
       // iterates all methods in model
       Object.values(actionProps).forEach(method => {
         // create dispatcher type name
@@ -114,3 +123,6 @@ export class ModelViewer {
     return reducers;
   }
 }
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
