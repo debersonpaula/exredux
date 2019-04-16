@@ -1,5 +1,9 @@
 import { Store, createStore as reduxCreateStore, combineReducers } from 'redux';
-import { DECORATOR_REDUX_MODEL, IDispatcherParams } from './Types';
+import {
+  DECORATOR_REDUX_MODEL,
+  IDispatcherParams,
+  DECORATOR_REDUX_DEPENDENCY
+} from './Types';
 import { ComponentProps } from './helpers/objectProperties';
 import { getActionProperties } from './ReduxAction';
 // ----------------------------------------------------------------------------
@@ -25,6 +29,7 @@ interface IReduxModelViewerParams {
 class ReduxModelInstance {
   name: string;
   component: any;
+  deps: string[];
 }
 // ----------------------------------------------------------------------------
 // --- COMPONENT --------------------------------------------------------------
@@ -49,8 +54,22 @@ export class ModelViewer {
     this._models = this.options.models.map((item) => {
       return {
         name: Reflect.getMetadata(DECORATOR_REDUX_MODEL, item),
-        component: new item()
+        component: new item(),
+        deps: Reflect.getMetadata(DECORATOR_REDUX_DEPENDENCY, item) || []
       };
+    });
+    // -----------------------------------------------------
+    // resolve dependencies
+    this._models.forEach((model) => {
+      model.deps.forEach((dep) => {
+        const depComponent = this._models.find((item) => item.name === dep);
+        if (!depComponent) {
+          throw `Dependency ${dep} is injected in ${
+            model.name
+          } but is not found in model store.`;
+        }
+        model.component[dep] = depComponent.component;
+      });
     });
     // -----------------------------------------------------
     // generate dispatchers

@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/",
+    "strict": false,
     "sourceMap": true,
     "declaration": true,
     "moduleResolution": "node",
@@ -9,7 +10,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
     "lib": ["es6", "dom"],
     "jsx": "react",
     "experimentalDecorators": true,
