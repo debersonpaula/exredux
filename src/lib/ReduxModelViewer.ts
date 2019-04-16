@@ -1,5 +1,5 @@
 import { Store, createStore as reduxCreateStore, combineReducers } from 'redux';
-import { DECORATOR_REDUX_MODEL } from './Types';
+import { DECORATOR_REDUX_MODEL, IDispatcherParams } from './Types';
 import { ComponentProps } from './helpers/objectProperties';
 import { getActionProperties } from './ReduxAction';
 // ----------------------------------------------------------------------------
@@ -46,7 +46,7 @@ export class ModelViewer {
     }
     // -----------------------------------------------------
     // create models
-    this._models = this.options.models.map(item => {
+    this._models = this.options.models.map((item) => {
       return {
         name: Reflect.getMetadata(DECORATOR_REDUX_MODEL, item),
         component: new item()
@@ -58,28 +58,33 @@ export class ModelViewer {
       // get constructor
       const actionConstructor = model.component.constructor;
       // extract props name from action
-      const actionProps: ComponentProps = getActionProperties(actionConstructor);
+      const actionProps: ComponentProps = getActionProperties(
+        actionConstructor
+      );
       // iterates all methods in model
-      Object.values(actionProps).forEach(method => {
-        // create dispatcher type name
-        const actionDispatchName = `${model.name}.${method.name}`;
-        // keep current handler
-        const stateHandler: Function = model.component[method.name];
-        // associate action dispatcher
-        model.component[method.name] = (...args: any) => {
-          // call current handler with model
-          // in this parameter
-          stateHandler.call(model.component, ...args);
-          // create dispatcher params based on
-          // component data object
-          const dispatcherParams = {
-            type: actionDispatchName,
-            payload: model.component
+      if (actionProps) {
+        Object.values(actionProps).forEach((method) => {
+          // create dispatcher type name
+          const actionDispatchName = `${model.name}.${method.name}`;
+          // keep current handler
+          const stateHandler: Function = model.component[method.name];
+          // associate action dispatcher
+          model.component[method.name] = (...args: any) => {
+            // call current handler with model
+            // in this parameter
+            stateHandler.call(model.component, ...args);
+            // create dispatcher params based on
+            // component data object
+            const dispatcherParams: IDispatcherParams = {
+              type: actionDispatchName,
+              payload: model.component,
+              modelName: model.name
+            };
+            // send
+            this._store.dispatch(dispatcherParams);
           };
-          // send 
-          this._store.dispatch(dispatcherParams);
-        }
-      });
+        });
+      }
     });
   }
 
@@ -116,8 +121,14 @@ export class ModelViewer {
       // extract name from state constructor
       const stateName = model.name;
       // create reducer evaluation
-      reducers[stateName] = (currentState = Object.assign({}, model.component), action: any) => {
-        return Object.assign({}, currentState, action.payload);
+      reducers[stateName] = (
+        currentState = Object.assign({}, model.component),
+        action: IDispatcherParams
+      ) => {
+        if (action.modelName === model.name) {
+          return { ...currentState, ...action.payload };
+        }
+        return currentState;
       };
     });
     return reducers;

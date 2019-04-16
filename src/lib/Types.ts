@@ -15,3 +15,12 @@ export type GenericMethodDecorator<T> = (target: T, key: string) => void;
 export const DECORATOR_REDUX_MODEL = 'DECORATOR_REDUX_MODEL';
 export const DECORATOR_REDUX_ACTION = 'DECORATOR_REDUX_ACTION';
 export const DECORATOR_REDUX_INJECT = 'DECORATOR_REDUX_INJECT';
+// --------------------------------------------------------------------
+/**
+ * 
+ */
+export interface IDispatcherParams {
+  type: string;
+  payload: any;
+  modelName: string;
+}
