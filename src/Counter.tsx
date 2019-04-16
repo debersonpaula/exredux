@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Connection } from './lib';
+import { Connection, Inject } from './lib';
 import { appModels } from './AppModels';
 import { CounterModel } from './CounterModel';
 import { ICounter } from './interface/ICounter';
-import { Inject } from './lib/ReduxInject';
 import { CounterComponent } from './CounterComponent';
 
 class ModelProps {

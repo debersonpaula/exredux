@@ -66,10 +66,10 @@ export class ModelViewer {
         // keep current handler
         const stateHandler: Function = model.component[method.name];
         // associate action dispatcher
-        model.component[method.name] = (...args: any[]) => {
+        model.component[method.name] = (...args: any) => {
           // call current handler with model
           // in this parameter
-          stateHandler.call(model.component, args);
+          stateHandler.call(model.component, ...args);
           // create dispatcher params based on
           // component data object
           const dispatcherParams = {
