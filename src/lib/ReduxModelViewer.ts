@@ -1,11 +1,9 @@
 import { Store, createStore as reduxCreateStore, combineReducers } from 'redux';
-import {
-  DECORATOR_REDUX_MODEL,
-  IDispatcherParams,
-  DECORATOR_REDUX_DEPENDENCY
-} from './Types';
+import { IDispatcherParams, Type } from './Types';
 import { ComponentProps } from './helpers/objectProperties';
 import { getActionProperties } from './ReduxAction';
+import { IDependencies, getDependencies } from './ReduxDependency';
+import { getModelName } from './ReduxModel';
 // ----------------------------------------------------------------------------
 // --- INTERFACE --------------------------------------------------------------
 // ----------------------------------------------------------------------------
@@ -23,13 +21,13 @@ interface IReduxModelViewerParams {
   /**
    * import models
    */
-  models?: any[];
+  models?: Type<any>[];
 }
 
 class ReduxModelInstance {
   name: string;
   component: any;
-  deps: string[];
+  deps: IDependencies;
 }
 // ----------------------------------------------------------------------------
 // --- COMPONENT --------------------------------------------------------------
@@ -51,24 +49,25 @@ export class ModelViewer {
     }
     // -----------------------------------------------------
     // create models
-    this._models = this.options.models.map((item) => {
+    this._models = this.options.models.map((modelConstructor) => {
       return {
-        name: Reflect.getMetadata(DECORATOR_REDUX_MODEL, item),
-        component: new item(),
-        deps: Reflect.getMetadata(DECORATOR_REDUX_DEPENDENCY, item) || []
+        name: getModelName(modelConstructor),
+        component: new modelConstructor(),
+        deps: getDependencies(modelConstructor.prototype)
       };
     });
+    // console.log('this._models', this._models);
     // -----------------------------------------------------
     // resolve dependencies
     this._models.forEach((model) => {
       model.deps.forEach((dep) => {
-        const depComponent = this._models.find((item) => item.name === dep);
+        const depComponent = this._models.find((item) => item.name === dep.modelName);
         if (!depComponent) {
           throw `Dependency ${dep} is injected in ${
             model.name
           } but is not found in model store.`;
         }
-        model.component[dep] = depComponent.component;
+        model.component[dep.propertyName] = depComponent.component;
       });
     });
     // -----------------------------------------------------

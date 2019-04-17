@@ -1,7 +1,7 @@
 {
-  "name": "react-mvvm-sample",
+  "name": "react-model-viewer",
   "version": "0.0.1",
-  "description": "React MVVM Sample",
+  "description": "React Model Viewer",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server -d --config ./config/webpack.config.dev.js",
@@ -18,12 +18,10 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
-    "babel-plugin-transform-typescript-metadata": "^0.2.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-redux": "^6.0.1",
-    "react-router-dom": "^4.3.1",
-    "react-router-redux": "^4.0.8",
+    "react-redux": "^7.0.2",
+    "react-router-dom": "4.3.1",
     "rxjs": "^6.4.0"
   },
   "devDependencies": {
@@ -43,16 +41,12 @@
     "@types/react-dom": "^16.8.2",
     "@types/react-redux": "^6.0.13",
     "@types/react-router-dom": "^4.3.1",
-    "@types/react-router-redux": "^5.0.18",
-    "@types/react-transition-group": "^2.0.16",
-    "@types/webpack-env": "^1.13.9",
     "awesome-typescript-loader": "^5.2.1",
     "babel-core": "^6.26.3",
     "babel-jest": "^24.5.0",
     "babel-loader": "^8.0.5",
     "classnames": "^2.2.6",
     "clean-webpack-plugin": "^0.1.19",
-    "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.10.0",

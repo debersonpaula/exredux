@@ -2,7 +2,7 @@
  * Decorate property in object or class
  * @param metaName Name of metadata
  */
-export function createObjectProperties(metaName: string, data?: any) {
+export function createObjectProperties(metaName: string | symbol, data?: any) {
   return (target, key) => {
     // define metadata if not exists
     if (!Reflect.hasMetadata(metaName, target)) {
@@ -29,7 +29,7 @@ export function extractObjectProperties(
     ctor: {
       prototype: any;
     },
-    metaName: string
+    metaName: string | symbol
   ): ComponentProps | undefined {
     return Reflect.getMetadata(metaName, ctor.prototype);
   }

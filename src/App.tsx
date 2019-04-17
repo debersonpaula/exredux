@@ -3,6 +3,7 @@ import { HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Counter } from './Counter';
 import { appModels } from './AppModels';
+import { ListData } from './ListData';
 
 export class Sample extends React.Component {
   public render() {
@@ -11,6 +12,8 @@ export class Sample extends React.Component {
         <Provider store={appModels.createStore()}>
           <React.Fragment>
             <Counter />
+            <hr />
+            <ListData />
           </React.Fragment>
         </Provider>
       </HashRouter>

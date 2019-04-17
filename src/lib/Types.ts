@@ -12,10 +12,10 @@ export interface Type<T> {
 export type GenericClassDecorator<T> = (target: T) => void;
 export type GenericMethodDecorator<T> = (target: T, key: string) => void;
 // --------------------------------------------------------------------
-export const DECORATOR_REDUX_MODEL = 'DECORATOR_REDUX_MODEL';
-export const DECORATOR_REDUX_ACTION = 'DECORATOR_REDUX_ACTION';
-export const DECORATOR_REDUX_INJECT = 'DECORATOR_REDUX_INJECT';
-export const DECORATOR_REDUX_DEPENDENCY = 'DECORATOR_REDUX_DEPENDENCY';
+export const DECORATOR_REDUX_MODEL = Symbol('DECORATOR_REDUX_MODEL');
+export const DECORATOR_REDUX_ACTION = Symbol('DECORATOR_REDUX_ACTION');
+export const DECORATOR_REDUX_INJECT = Symbol('DECORATOR_REDUX_INJECT');
+export const DECORATOR_REDUX_DEPENDENCY = Symbol('DECORATOR_REDUX_DEPENDENCY');
 // --------------------------------------------------------------------
 /**
  * 
