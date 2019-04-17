@@ -1,4 +1,4 @@
-# Redux Model Viewer
+# EXREDUX
 
 React/Redux utility to create flows that acts as Actions and Reducers with Typescript and Decorators.
 

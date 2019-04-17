@@ -1,13 +1,13 @@
 {
   "name": "exredux",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.1-beta.2",
   "description": "React-Redux Model Viewer Library",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server -d --config ./config/webpack.config.dev.js",
     "build": "npm run clean && npm run package && npm run postbuild",
     "clean": "rm -rf ./dist",
-    "publish": "npm run build && cd dist && npm publish",
+    "deploy": "npm run build && cd dist && npm publish",
     "package": "webpack -p --config ./config/webpack.config.prod.js",
     "postbuild": "node ./deploy/postbuild.js",
     "tsc": "tsc -d",

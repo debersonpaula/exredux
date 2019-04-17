@@ -7,5 +7,6 @@ const packageObject = JSON.parse(packageFile);
 packageObject.dependencies = {};
 packageObject.devDependencies = {};
 packageObject.scripts = {};
-
 fs.writeFileSync('./dist/package.json', JSON.stringify(packageObject));
+
+fs.copyFileSync("./README.md", "./dist/README.md");
