@@ -23,7 +23,7 @@ module.exports = {
   output: {
     filename: "index.js",
     path: path.join(rootDir, "dist"),
-    library: "redux-flow-mapper",
+    library: "exredux",
     libraryTarget: "umd",
     publicPath: "/dist/",
     umdNamedDefine: true

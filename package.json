@@ -14,8 +14,14 @@
     "tslint": "tslint -c tslint.json 'src/**/*.ts*'",
     "tslint:fix": "tslint -c tslint.json 'src/**/*.ts*' --fix"
   },
-  "author": "D.A.Paula",
+  "author": "D.A.Paula <deberson.paula@gmail.com>",
   "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.0.0",
+    "react-dom": ">=16.0.0",
+    "react-redux": ">=7.0.0",
+    "reflect-metadata": ">=0.1.13"
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "react": "^16.8.6",
