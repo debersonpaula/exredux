@@ -1,7 +1,7 @@
 {
-  "name": "react-model-viewer",
-  "version": "0.0.1",
-  "description": "React Model Viewer",
+  "name": "exredux",
+  "version": "0.0.1-beta.1",
+  "description": "React-Redux Model Viewer Library",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server -d --config ./config/webpack.config.dev.js",
