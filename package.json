@@ -1,6 +1,6 @@
 {
   "name": "exredux",
-  "version": "0.0.1-beta.3",
+  "version": "0.0.1-beta.4",
   "description": "React-Redux Model Viewer Library",
   "main": "index.js",
   "scripts": {
