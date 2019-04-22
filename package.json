@@ -1,6 +1,6 @@
 {
   "name": "exredux",
-  "version": "0.0.1-beta.4",
+  "version": "0.0.1-beta.5",
   "description": "React-Redux Model Viewer Library",
   "main": "index.js",
   "scripts": {
@@ -93,5 +93,13 @@
   ],
   "directories": {
     "doc": "docs"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/debersonpaula/exredux.git"
+  },
+  "bugs": {
+    "url": "https://github.com/debersonpaula/exredux/issues"
+  },
+  "homepage": "https://github.com/debersonpaula/exredux#readme"
 }
