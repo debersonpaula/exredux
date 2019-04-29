@@ -1,6 +1,4 @@
 import { AxiosResponse, AxiosError } from "axios";
-import axios from 'axios';
-export { axios as http };
 
 /**
  * Class to be extended for states based on Axios Http requests

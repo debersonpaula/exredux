@@ -6,5 +6,9 @@ import { Model } from './ReduxModel';
 import { ModelViewer } from './ReduxModelViewer';
 export { Action, Connection, Dependency, Inject, Model, ModelViewer };
 
-import { IBaseHttpModel, http } from './helpers/IBaseHttpModel';
-export { IBaseHttpModel, http };
+import axios from 'axios';
+export { axios as http };
+
+import { IBaseHttpModel } from './helpers/IBaseHttpModel';
+import { BaseHttpModel } from './helpers/BaseHttpModel';
+export { IBaseHttpModel, BaseHttpModel };
