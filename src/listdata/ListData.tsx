@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Connection, Inject } from './lib';
-import { appModels } from './AppModels';
-import { IListData } from './interface/IListData';
+import { Connection, Inject } from '../lib';
+import { appModels } from '../AppModels';
+import { IListData } from '../interface/IListData';
 import { ListDataModel } from './ListDataModel';
 import { ListDataComponent } from './ListDataComponent';
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ICounter } from './interface/ICounter';
+import { ICounter } from '../interface/ICounter';
 
 export class CounterComponent extends React.Component<ICounter> {
   public render() {

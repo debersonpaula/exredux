@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Connection, Inject } from './lib';
-import { appModels } from './AppModels';
+import { Connection, Inject } from '../lib';
+import { appModels } from '../AppModels';
 import { CounterModel } from './CounterModel';
-import { ICounter } from './interface/ICounter';
+import { ICounter } from '../interface/ICounter';
 import { CounterComponent } from './CounterComponent';
 
 class ModelProps {

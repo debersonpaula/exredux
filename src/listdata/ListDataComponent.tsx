@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IListData } from './interface/IListData';
+import { IListData } from '../interface/IListData';
 
 export class ListDataComponent extends React.Component<IListData> {
   public render() {

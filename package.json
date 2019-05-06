@@ -1,6 +1,6 @@
 {
   "name": "exredux",
-  "version": "0.0.1-beta.6",
+  "version": "0.0.1-beta.7",
   "description": "React-Redux Model Viewer Library",
   "main": "index.js",
   "scripts": {
@@ -71,6 +71,7 @@
     "style-loader": "^0.23.1",
     "stylelint": "^9.10.1",
     "stylelint-webpack-plugin": "^0.10.5",
+    "tar": ">=4.4.2",
     "ts-jest": "^23.10.4",
     "tslint": "^5.13.1",
     "tslint-config-airbnb": "^5.11.0",
