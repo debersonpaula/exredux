@@ -4,7 +4,7 @@ fs.writeFileSync('./dist/index.d.ts', def);
 
 const packageFile = fs.readFileSync('./package.json');
 const packageObject = JSON.parse(packageFile);
-packageObject.dependencies = {};
+// packageObject.dependencies = {};
 packageObject.devDependencies = {};
 packageObject.scripts = {};
 fs.writeFileSync('./dist/package.json', JSON.stringify(packageObject));

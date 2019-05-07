@@ -1,8 +1,11 @@
-import { Model, Action, BaseHttpModel } from '../lib';
+import { Model, Action, BaseHttpModel } from 'exredux';
+
+// mocking http request
+const httpRequest = (label: string) => Promise.resolve({ data: label });
 
 @Model
 export class HttpModel extends BaseHttpModel<string> {
   @Action getHttpTest(label: string) {
-    this.request(Promise.resolve({data: label}));
+    this.request(httpRequest(label));
   }
 }

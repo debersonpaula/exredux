@@ -14,7 +14,10 @@
     "lib": ["es6", "dom"],
     "jsx": "react",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "paths": {
+      "exredux" : ["src/lib"]
+    }
   },
   "include": ["./src/**/*"],
   "exclude": ["node_modules"]

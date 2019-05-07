@@ -32,7 +32,7 @@ class ReduxModelInstance {
 // ----------------------------------------------------------------------------
 // --- COMPONENT --------------------------------------------------------------
 // ----------------------------------------------------------------------------
-export class ModelViewer {
+export class ModelStore {
   private options: IReduxModelViewerParams;
   private _store: Store;
   private _models: ReduxModelInstance[];

@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { Connection, Inject } from '../lib';
+import { Connection, Inject } from 'exredux';
 import { appModels } from '../AppModels';
-import { IListData } from '../interface/IListData';
 import { ListDataModel } from './ListDataModel';
-import { ListDataComponent } from './ListDataComponent';
 
 class ModelProps {
-  @Inject(ListDataModel) listDataModel?: IListData;
+  @Inject(ListDataModel) listDataModel?: ListDataModel;
 }
 
 @Connection({
@@ -17,7 +15,18 @@ export class ListData extends React.Component<ModelProps> {
   render() {
     const { listDataModel } = this.props;
     return (
-      <ListDataComponent list={listDataModel.list} add={listDataModel.add} />
+      <div>
+        <button onClick={this.addItem}>Add</button>
+        <ul>
+          {listDataModel.list.map((item, key) => (
+            <li key={key}>{item}</li>
+          ))}
+        </ul>
+      </div>
     );
   }
+
+  addItem = () => {
+    this.props.listDataModel.add('list-item');
+  };
 }

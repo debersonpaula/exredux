@@ -1,6 +1,6 @@
 {
   "name": "exredux",
-  "version": "0.0.1-beta.7",
+  "version": "0.0.1",
   "description": "React-Redux Model Viewer Library",
   "main": "index.js",
   "scripts": {
@@ -17,19 +17,12 @@
   "author": "D.A.Paula <deberson.paula@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "react": ">=16.0.0",
-    "react-dom": ">=16.0.0",
     "react-redux": ">=7.0.0",
-    "reflect-metadata": ">=0.1.13",
     "typescript": ">=3.0.0"
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-redux": "^7.0.2",
-    "react-router-dom": "4.3.1",
-    "rxjs": "^6.4.0"
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -52,20 +45,21 @@
     "babel-core": "^6.26.3",
     "babel-jest": "^24.5.0",
     "babel-loader": "^8.0.5",
-    "classnames": "^2.2.6",
-    "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^1.0.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.10.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^3.2.0",
-    "identity-obj-proxy": "^3.0.0",
     "jest": "^24.5.0",
     "node-sass": "^4.9.4",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-hot-loader": "^4.8.0",
+    "react-redux": "^7.0.2",
+    "react-router-dom": "4.3.1",
     "redux-devtools-extension": "^2.13.8",
-    "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.4.0",
     "sass-loader": "^7.1.0",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",

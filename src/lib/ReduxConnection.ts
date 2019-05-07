@@ -1,4 +1,4 @@
-import { ModelViewer } from './ReduxModelViewer';
+import { ModelStore } from './ReduxStore';
 import { GenericClassDecorator, Type } from './Types';
 import { connect } from 'react-redux';
 import { getInjectionProperties } from './ReduxInject';
@@ -9,7 +9,7 @@ interface IReduxConnectionParams {
   /**
    * Flow object to be used as map
    */
-  modelViewer: ModelViewer;
+  modelViewer: ModelStore;
 
   /**
    * Properties class

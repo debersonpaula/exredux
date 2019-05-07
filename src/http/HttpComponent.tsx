@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Connection, Inject } from '../lib';
+import { Connection, Inject } from 'exredux';
 import { appModels } from '../AppModels';
 import { HttpModel } from './HttpModel';
 import { HttpDepModel } from './HttpDepModel';
@@ -21,6 +21,7 @@ export class HttpComponent extends React.Component<ModelProps> {
         <button onClick={this.handleClick}>Get from Http</button>
         <button onClick={this.handleClickDep}>Get from HttpDep</button>
         {httpModel.isCompleted ? <p>From http model => {httpModel.response.data}</p> : null}
+        {httpModel.isLoading ? <p>Loading...</p> : null}
       </div>
     );
   }
