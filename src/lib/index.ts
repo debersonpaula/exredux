@@ -1,10 +1,11 @@
 import { Action } from './ReduxAction';
+import { ActionListener } from './ReduxActionListener';
 import { Connection } from './ReduxConnection';
 import { Dependency } from './ReduxDependency';
 import { Inject } from './ReduxInject';
 import { Model } from './ReduxModel';
 import { ModelStore } from './ReduxStore';
-export { Action, Connection, Dependency, Inject, Model, ModelStore };
+export { Action, ActionListener, Connection, Dependency, Inject, Model, ModelStore };
 
 import axios from 'axios';
 export { axios as http };

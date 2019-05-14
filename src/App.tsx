@@ -5,6 +5,7 @@ import { Counter } from './counter/Counter';
 import { appModels } from './AppModels';
 import { ListData } from './listdata/ListData';
 import { HttpComponent } from './http/HttpComponent';
+import { EventComponent } from './events/EventComponent';
 
 export class Sample extends React.Component {
   public render() {
@@ -17,6 +18,8 @@ export class Sample extends React.Component {
             <ListData />
             <hr />
             <HttpComponent />
+            <hr />
+            <EventComponent />
           </React.Fragment>
         </Provider>
       </HashRouter>
