@@ -8,4 +8,8 @@ export class HttpModel extends BaseHttpModel<string> {
   @Action getHttpTest(label: string) {
     this.request(httpRequest(label));
   }
+
+  @Action reset() {
+    this.resetState()
+  }
 }

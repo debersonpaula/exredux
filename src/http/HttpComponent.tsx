@@ -20,6 +20,8 @@ export class HttpComponent extends React.Component<ModelProps> {
       <div>
         <button onClick={this.handleClick}>Get from Http</button>
         <button onClick={this.handleClickDep}>Get from HttpDep</button>
+        <button onClick={this.handleReset}>ResetState</button>
+
         {httpModel.isCompleted ? <p>From http model => {httpModel.response.data}</p> : null}
         {httpModel.isLoading ? <p>Loading...</p> : null}
       </div>
@@ -32,5 +34,9 @@ export class HttpComponent extends React.Component<ModelProps> {
 
   handleClickDep = () => {
     this.props.httpDepModel.getHttpDepTest('test inserted from HttpComponent');
+  }
+
+  handleReset = () =>{
+    this.props.httpModel.reset();
   }
 }

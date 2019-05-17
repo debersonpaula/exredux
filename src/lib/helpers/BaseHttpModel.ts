@@ -45,4 +45,13 @@ export class BaseHttpModel<T = any> extends IBaseHttpModel<T> {
       .then(response => this.completed(response))
       .catch(error => this.failed(error));
   }
+
+  @Action
+  protected resetState() {
+    this.isLoading = false;
+    this.isCompleted = false;
+    this.isFailed = false;
+    this.response = undefined;
+    this.error = undefined;
+  }
 }

@@ -9,6 +9,6 @@ export class ListDataModel {
   @Dependency(CounterModel) counterModel: CounterModel;
 
   @Action add(name: string) {
-    this.list.push(name + '-' + this.counterModel.counter);
+    this.list.push(`${name}-${this.counterModel.counter}`);
   }
 }
