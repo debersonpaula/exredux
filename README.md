@@ -108,7 +108,7 @@ Also, the variable that stores the ModelStore, must be used in the connection to
 
 ## Connection
 
-The models will be available on component, thru the Connection decorator, that indicate the ModelViewer and the model injection properties:
+The models will be available on component, thru the Connection decorator, that indicate the ModelStore and the model injection properties:
 ```tsx
 import * as React from 'react';
 import { Connection, Inject } from 'exredux';
@@ -122,7 +122,7 @@ class ModelProps {
 
 // make connection between state and component
 @Connection({
-  modelViewer: appModels, // <-- model store location
+  modelStore: appModels, // <-- model store location
   props: ModelProps // <-- props with model injection
 })
 export class Counter extends React.Component<ModelProps> {
@@ -172,7 +172,7 @@ class ModelProps {
 }
 
 @Connection({
-  modelViewer: appModels,
+  modelStore: appModels,
   props: ModelProps
 })
 export class HttpComponent extends React.Component<ModelProps> {

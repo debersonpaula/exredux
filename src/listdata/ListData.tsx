@@ -8,7 +8,7 @@ class ModelProps {
 }
 
 @Connection({
-  modelViewer: appModels,
+  modelStore: appModels,
   props: ModelProps
 })
 export class ListData extends React.Component<ModelProps> {

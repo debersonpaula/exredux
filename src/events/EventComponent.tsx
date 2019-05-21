@@ -8,7 +8,7 @@ class ModelProps {
 }
 
 @Connection({
-  modelViewer: appModels,
+  modelStore: appModels,
   props: ModelProps
 })
 export class EventComponent extends React.Component<ModelProps> {

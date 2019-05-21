@@ -1,7 +1,7 @@
 {
   "name": "exredux",
-  "version": "0.0.3",
-  "description": "React-Redux Model Viewer Library",
+  "version": "0.0.4",
+  "description": "React-Redux Model Store Library",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server -d --config ./config/webpack.config.dev.js",
