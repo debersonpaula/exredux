@@ -9,7 +9,7 @@ interface IReduxConnectionParams {
   /**
    * Flow object to be used as map
    */
-  modelViewer: ModelStore;
+  modelStore: ModelStore;
 
   /**
    * Properties class

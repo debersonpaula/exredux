@@ -9,7 +9,7 @@ import { getModelName } from './ReduxModel';
 // ----------------------------------------------------------------------------
 // --- INTERFACE --------------------------------------------------------------
 // ----------------------------------------------------------------------------
-interface IReduxModelViewerParams {
+interface IReduxModelStoreParams {
   /**
    * include devtools extension for browser debug
    */
@@ -39,12 +39,12 @@ class ActionListener {
 // --- COMPONENT --------------------------------------------------------------
 // ----------------------------------------------------------------------------
 export class ModelStore {
-  private options: IReduxModelViewerParams;
+  private options: IReduxModelStoreParams;
   private _store: Store;
   private _models: ReduxModelInstance[];
   public _actionListener = new BehaviorSubject<ActionListener>({ actionName: '' });
 
-  constructor(param: IReduxModelViewerParams) {
+  constructor(param: IReduxModelStoreParams) {
     this.options = param;
     // -----------------------------------------------------
     // create basic store

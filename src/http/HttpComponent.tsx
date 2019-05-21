@@ -10,7 +10,7 @@ class ModelProps {
 }
 
 @Connection({
-  modelViewer: appModels,
+  modelStore: appModels,
   props: ModelProps
 })
 export class HttpComponent extends React.Component<ModelProps> {
