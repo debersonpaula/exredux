@@ -13,30 +13,31 @@ module.exports = {
     open: true,
     historyApiFallback: true
   },
-  entry: ['react-hot-loader/patch', path.join(rootDir, 'src/index.tsx')],
+  entry: ['react-hot-loader/patch', path.join(rootDir, 'playground/index.tsx')],
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'babel-loader'
+        // loader: 'babel-loader'
+        loader: 'ts-loader'
       },
-      {
-        enforce: 'pre',
-        test: /\.js$/,
-        loader: 'source-map-loader',
-        exclude: [path.join(process.cwd(), 'node_modules')]
-      },
-      {
-        test: /\.scss$/,
-        loader: 'style-loader!css-loader!sass-loader'
-      },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loader: 'url-loader',
-        options: {
-          limit: 10000
-        }
-      }
+      // {
+      //   enforce: 'pre',
+      //   test: /\.js$/,
+      //   loader: 'source-map-loader',
+      //   exclude: [path.join(process.cwd(), 'node_modules')]
+      // },
+      // {
+      //   test: /\.scss$/,
+      //   loader: 'style-loader!css-loader!sass-loader'
+      // },
+      // {
+      //   test: /\.(jpe?g|png|gif|svg)$/i,
+      //   loader: 'url-loader',
+      //   options: {
+      //     limit: 10000
+      //   }
+      // }
     ]
   },
   resolve: {
@@ -49,7 +50,7 @@ module.exports = {
   },
   plugins: [
     new HTMLWebpackPlugin({
-      template: path.join(rootDir, 'src/index.html'),
+      template: path.join(rootDir, 'playground/index.html'),
       inject: true
     }),
     new webpack.HotModuleReplacementPlugin(),

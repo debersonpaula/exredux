@@ -1,5 +1,5 @@
 import { IBaseHttpModel } from './IBaseHttpModel';
-import { Action } from '../ReduxAction';
+import { Action } from '../../libStoreModel';
 
 export class BaseHttpModel<T = any> extends IBaseHttpModel<T> {
   constructor() {

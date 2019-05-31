@@ -7,4 +7,8 @@ export class CounterModel {
   @Action add() {
     this.counter += 1;
   }
+
+  @Action del() {
+    this.counter -= 1;
+  }
 }

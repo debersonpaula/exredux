@@ -4,21 +4,23 @@ import { appModels } from '../AppModels';
 import { CounterModel } from './CounterModel';
 
 class ModelProps {
-  @Inject(CounterModel) counterModel?: CounterModel;
+  @Inject counterModel: CounterModel;
 }
+type Props = Partial<ModelProps>;
 
 @Connection({
   modelStore: appModels,
   props: ModelProps
 })
-export class Counter extends React.Component<ModelProps> {
+export class Counter extends React.Component<Props> {
   render() {
     const { counterModel } = this.props;
     return (
       <div>
         Counter = {counterModel.counter}
         <br />
-        <button onClick={counterModel.add}>Add</button>
+        <button onClick={counterModel.add}>Increase</button>
+        <button onClick={counterModel.del}>Decrease</button>
       </div>
     );
   }

@@ -11,14 +11,14 @@
     "noUnusedParameters": true,
     "module": "commonjs",
     "target": "es5",
-    "lib": ["es6", "dom"],
+    "lib": ["es5", "es2015", "es6", "dom"],
     "jsx": "react",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "paths": {
-      "exredux" : ["src/lib"]
+      "exredux": ["src"]
     }
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "./playground/**/*"],
   "exclude": ["node_modules"]
 }
