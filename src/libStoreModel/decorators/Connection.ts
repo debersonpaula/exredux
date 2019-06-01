@@ -10,6 +10,7 @@ export const Connection = (options: IConnectionParams): ClassDecorator => {
   const metadata: IConnection = {
     injections: getInject(propsObject)
   };
+
   return target => {
     Reflect.defineMetadata(DECORATOR_CONNECTION, metadata, target);
     return options.modelStore._connect(target, metadata);
