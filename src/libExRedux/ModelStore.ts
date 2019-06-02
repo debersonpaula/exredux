@@ -1,5 +1,6 @@
 import { Store, createStore as reduxCreateStore, combineReducers } from 'redux';
 import { connect } from 'react-redux';
+import { devToolsEnhancer } from 'redux-devtools-extension';
 import { Store as BaseStore, IConnection, IAction } from '../libStoreModel';
 import { IModelStoreParams } from './IModelStoreParams';
 // ----------------------------------------------------------------------------
@@ -16,8 +17,7 @@ export class ModelStore extends BaseStore {
     // -----------------------------------------------------
     // create basic store
     if (param.devExtension) {
-      this._store = reduxCreateStore(() => {},
-      window['__REDUX_DEVTOOLS_EXTENSION__'] && window['__REDUX_DEVTOOLS_EXTENSION__']());
+      this._store = reduxCreateStore(()=>{}, devToolsEnhancer({}));
     } else {
       this._store = reduxCreateStore(() => {});
     }
@@ -26,19 +26,25 @@ export class ModelStore extends BaseStore {
   // tslint:disable-next-line: function-name
   _connect(target: any, connection: IConnection) {
     if (connection) {
+      connection.injections.forEach(model => {
+        if (!this._models.find(item => model.typeName === item.className)) {
+          // tslint:disable-next-line: no-console
+          console.error(
+            `Property ${model.propertyName} is injected as ${
+              model.typeName
+            } in ${target.name} can't not be found in model store.`
+          );
+        }
+      });
+
       // mapping redux state to component props
       const mapStateToProps = state =>
         connection.injections.reduce((total, model) => {
           total[model.propertyName] = state[model.typeName];
           return total;
         }, {});
-
-      // // create component connected to the redux store
-      // const connectedComponent = connect(mapStateToProps)(target);
-
-      // console.log('connectedComponent', connectedComponent);
-
-      return connect(mapStateToProps)(target);;
+      // connect to redux state
+      return connect(mapStateToProps)(target);
     }
     return target;
   }

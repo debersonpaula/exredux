@@ -3,7 +3,15 @@ import { getModel } from './decorators/Model';
 import { getInject } from './decorators/Inject';
 import { getAction } from './decorators/Action';
 import { getTrigger } from './decorators/Trigger';
-import { IModel, Type, IStore, IConnection, IAction, IDispatchValues, ITrigger } from './base/interfaces';
+import {
+  IModel,
+  Type,
+  IStore,
+  IConnection,
+  IAction,
+  IDispatchValues,
+  ITrigger
+} from './base/interfaces';
 
 export class Store implements IStore {
   _models: IModel[];
@@ -23,9 +31,13 @@ export class Store implements IStore {
     // resolve dependencies
     this._models.forEach(model => {
       model.deps.map(dep => {
-        const depComponent = this._models.find(item => item.className === dep.typeName);
+        const depComponent = this._models.find(
+          item => item.className === dep.typeName
+        );
         if (!depComponent) {
-          throw `Dependency ${dep} is injected in ${model.className} but is not found in model store.`;
+          throw `Dependency ${dep} is injected in ${
+            model.className
+          } but is not found in model store.`;
         }
         model.instance[dep.propertyName] = depComponent.instance;
       });
@@ -44,7 +56,10 @@ export class Store implements IStore {
         this._actionListener.subscribe(obj => {
           if (obj !== null) {
             // check if the name matches
-            if (obj.action.dispatchName === trigger.dispatchName) {
+            if (
+              obj.action.dispatchName ===
+              `${trigger.listenToModel.name}.${trigger.listenToMethod}`
+            ) {
               // trigger the method
               triggerFunction();
             }
@@ -77,9 +92,13 @@ export class Store implements IStore {
    */
   _connect(target: Function, connection: IConnection) {
     connection.injections.forEach(item => {
-      const model = this._models.find(model => model.className === item.typeName);
+      const model = this._models.find(
+        model => model.className === item.typeName
+      );
       if (!model) {
-        throw `Injection ${item.typeName} is injected in ${target.name} but is not found in model store.`;
+        throw `Injection ${item.typeName} is injected in ${
+          target.name
+        } but is not found in model store.`;
       }
 
       Object.defineProperty(target.prototype, item.propertyName, {

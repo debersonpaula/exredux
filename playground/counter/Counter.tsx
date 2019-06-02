@@ -17,6 +17,8 @@ export class Counter extends React.Component<Props> {
     const { counterModel } = this.props;
     return (
       <div>
+        Example of Model
+        <br />
         Counter = {counterModel.counter}
         <br />
         <button onClick={counterModel.add}>Increase</button>

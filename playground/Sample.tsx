@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 
 import { appModels } from './AppModels';
 import { Counter } from './counter/Counter';
+import { List } from './list/List';
+import { Events } from './events/Events';
 
 export class Sample extends React.Component {
   public render() {
@@ -11,8 +13,13 @@ export class Sample extends React.Component {
       <HashRouter>
         <Provider store={appModels.createStore()}>
           <div>
-            Test Application for ExRedux: <hr />
+            Test Application for ExRedux
+            <hr />
             <Counter />
+            <hr />
+            <List />
+            <hr />
+            <Events />
           </div>
         </Provider>
       </HashRouter>
