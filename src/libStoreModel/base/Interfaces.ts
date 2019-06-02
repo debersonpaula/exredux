@@ -25,11 +25,7 @@ export interface IAction {
   /**
    * Name of Container class
    */
-  className: string;
-  /**
-   * className + methodName
-   */
-  dispatchName: string;
+  modelName: string;
 }
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------

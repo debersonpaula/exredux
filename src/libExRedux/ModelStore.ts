@@ -53,8 +53,8 @@ export class ModelStore extends BaseStore {
   _dispatch(action: IAction, payload: Object) {
     this._store.dispatch<IDispatcherParams>({
       payload,
-      type: action.dispatchName,
-      modelName: action.className
+      type: `${action.modelName}.${action.methodName}`,
+      modelName: action.modelName
     });
     super._dispatch(action, payload);
   }

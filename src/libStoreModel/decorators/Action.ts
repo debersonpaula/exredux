@@ -7,12 +7,10 @@ import { IAction } from '../base/interfaces';
 // ----------------------------------------------------------------------------
 export const Action: MethodDecorator = (target, propertyKey) => {
   const methodName = propertyKey.toString();
-  const className = target.constructor.name;
   
   createObjectProperties<IAction>(target, DECORATOR_ACTION, {
     methodName,
-    className,
-    dispatchName: `${className}.${methodName}`
+    modelName: ''
   });
 };
 // ----------------------------------------------------------------------------

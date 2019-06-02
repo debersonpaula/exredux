@@ -46,10 +46,14 @@ export class Store implements IStore {
     // create actions and triggers
     this._models.forEach(model => {
       // Action
-      model.actions.forEach(action => this._defineDispatcher(model, action));
+      model.actions.forEach(action => {
+        action.modelName = model.className;
+        this._defineDispatcher(model, action);
+      });
 
       // Trigger
       model.triggers.forEach(trigger => {
+        trigger.modelName = model.className;
         const triggerFunction = this._defineDispatcher(model, trigger);
 
         // listen to subject "_actionListener"
@@ -57,7 +61,7 @@ export class Store implements IStore {
           if (obj !== null) {
             // check if the name matches
             if (
-              obj.action.dispatchName ===
+              `${model.className}.${obj.action.methodName}` ===
               `${trigger.listenToModel.name}.${trigger.listenToMethod}`
             ) {
               // trigger the method
