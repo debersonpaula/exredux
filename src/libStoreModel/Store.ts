@@ -56,13 +56,14 @@ export class Store implements IStore {
         trigger.modelName = model.className;
         const triggerFunction = this._defineDispatcher(model, trigger);
 
+        const watchDispatchName = `${trigger.listenToModel.name}.${trigger.listenToMethod}`;
+
         // listen to subject "_actionListener"
         this._actionListener.subscribe(obj => {
           if (obj !== null) {
             // check if the name matches
             if (
-              `${model.className}.${obj.action.methodName}` ===
-              `${trigger.listenToModel.name}.${trigger.listenToMethod}`
+              `${obj.action.modelName}.${obj.action.methodName}` === watchDispatchName
             ) {
               // trigger the method
               triggerFunction();
