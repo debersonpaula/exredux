@@ -17,9 +17,10 @@
   "author": "D.A.Paula <deberson.paula@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
+    "react": ">=16.0.0",
+    "react-dom": ">=16.0.0",
     "react-redux": ">=7.0.0",
-    "typescript": ">=3.0.0",
-    "babel-plugin-transform-typescript-metadata": ">=0.2.0"
+    "typescript": ">=3.0.0"
   },
   "dependencies": {
     "axios": "^0.18.0",

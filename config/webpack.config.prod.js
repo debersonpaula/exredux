@@ -4,7 +4,7 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = {
   mode: "production",
-  entry: [path.join(rootDir, "deploy/index.ts")],
+  entry: [path.join(rootDir, "src/index.ts")],
   devtool: 'source-map',
   module: {
     rules: [
@@ -53,12 +53,6 @@ module.exports = {
       commonjs2: "react-redux",
       amd: "react-redux",
       root: "react-redux"
-    },
-    rxjs: {
-      commonjs: "rxjs",
-      commonjs2: "rxjs",
-      amd: "rxjs",
-      root: "rxjs"
     },
     react: {
       commonjs: "react",

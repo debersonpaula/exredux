@@ -1,4 +1,4 @@
-import { DECORATOR_IS_METHOD } from "../base/Consts";
+import { DECORATOR_IS_METHOD } from '../base/Consts';
 
 export function createObjectProperties<T>(target: Object, metaname: string | symbol, metadata: T) {
   // define metadata if not exists
@@ -10,10 +10,9 @@ export function createObjectProperties<T>(target: Object, metaname: string | sym
   const metadataList = extractObjectProperties(target, metaname);
   metadataList.push(metadata);
 
-  // console.log('createObjectProperties', metaname, metadataList);
   Reflect.defineMetadata(DECORATOR_IS_METHOD, true, target);
 }
 
-export function extractObjectProperties<T>(target: Object, metaname: string | symbol): Array<T> {
+export function extractObjectProperties<T>(target: Object, metaname: string | symbol): T[] {
   return Reflect.getMetadata(metaname, target.constructor) || [];
 }
