@@ -1,7 +1,7 @@
 import 'reflect-metadata';
-import { DECORATOR_ACTION } from '../base/Consts';
+import { DECORATOR_ACTION } from '../base/consts';
 import { createObjectProperties, extractObjectProperties } from '../helpers/propertyListCreator';
-import { IAction } from '../base/interfaces';
+import { IAction } from '../base/contracts';
 // ----------------------------------------------------------------------------
 // --- DECORATOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------

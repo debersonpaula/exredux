@@ -1,10 +1,10 @@
 import 'reflect-metadata';
-import { DECORATOR_TRIGGER } from '../base/Consts';
+import { DECORATOR_TRIGGER } from '../base/consts';
 import {
   createObjectProperties,
   extractObjectProperties
 } from '../helpers/propertyListCreator';
-import { ITrigger, Type } from '../base/interfaces';
+import { ITrigger, Type } from '../base/contracts';
 // ----------------------------------------------------------------------------
 // --- DECORATOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------

@@ -11,7 +11,7 @@ import {
   IAction,
   IDispatchValues,
   ITrigger
-} from './base/interfaces';
+} from './base/contracts';
 
 export class Store implements IStore {
   _models: IModel[];

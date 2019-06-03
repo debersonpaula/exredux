@@ -1,4 +1,4 @@
-import { DECORATOR_IS_METHOD } from '../base/Consts';
+import { DECORATOR_IS_METHOD } from '../base/consts';
 
 export function createObjectProperties<T>(target: Object, metaname: string | symbol, metadata: T) {
   // define metadata if not exists

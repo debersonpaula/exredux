@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { DECORATOR_MODEL } from '../base/Consts';
-import { IModel } from '../base/interfaces';
+import { DECORATOR_MODEL } from '../base/consts';
+import { IModel } from '../base/contracts';
 // ----------------------------------------------------------------------------
 // --- DECORATOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------

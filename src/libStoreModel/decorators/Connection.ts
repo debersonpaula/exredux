@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { DECORATOR_CONNECTION } from '../base/Consts';
-import { IConnection, Type, IStore } from '../base/interfaces';
+import { DECORATOR_CONNECTION } from '../base/consts';
+import { IConnection, Type, IStore } from '../base/contracts';
 import { getInject } from './Inject';
 // ----------------------------------------------------------------------------
 // --- DECORATOR --------------------------------------------------------------

@@ -1,10 +1,10 @@
 import 'reflect-metadata';
-import { DECORATOR_INJECT } from '../base/Consts';
+import { DECORATOR_INJECT } from '../base/consts';
 import {
   createObjectProperties,
   extractObjectProperties
 } from '../helpers/propertyListCreator';
-import { IInject } from '../base/interfaces';
+import { IInject } from '../base/contracts';
 // ----------------------------------------------------------------------------
 // --- DECORATOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------
