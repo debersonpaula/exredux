@@ -49,6 +49,12 @@ module.exports = {
 			commonjs2: 'react-dom',
 			amd: 'ReactDOM',
 			root: 'ReactDOM'
+		},
+		'axios': {
+			commonjs: 'axios',
+			commonjs2: 'axios',
+			amd: 'axios',
+			root: 'axios'
 		}
 	}
 };

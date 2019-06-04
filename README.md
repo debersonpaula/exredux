@@ -65,7 +65,7 @@ The _Model_ it's a simple class with properties and methods. And values that was
 The reducer name will be the same as the class name.
 
 ```ts
-import { Model } from 'exredux';
+import { Model } from "exredux";
 
 @Model
 export class CounterModel {
@@ -80,7 +80,7 @@ The _Action_ it's a method decorator and acts as dispatcher for the decorated me
 Any method decored will be replaced by dispatcher function that emits an action with the name of method as type and the result of the original function, will be the payload to be stored in the reducer.
 
 ```ts
-import { Model, Action } from 'exredux';
+import { Model, Action } from "exredux";
 
 @Model
 export class CounterModel {
@@ -99,9 +99,9 @@ The main component of Exredux, the ModelStore act as dependency controller.
 All models created should be listed in the models property:
 
 ```ts
-import { ModelStore } from 'exredux';
-import { CounterModel } from './counter/CounterModel';
-import { ListDataModel } from './listdata/ListDataModel';
+import { ModelStore } from "exredux";
+import { CounterModel } from "./counter/CounterModel";
+import { ListDataModel } from "./listdata/ListDataModel";
 
 export const appModels = new ModelStore({
   devExtension: true, // enables redux-dev-extension for chrome
@@ -116,10 +116,10 @@ Also, the variable that stores the ModelStore, must be used in the connection to
 The models will be available on component, thru the Connection decorator, that indicate the ModelStore and the model injection properties:
 
 ```tsx
-import * as React from 'react';
-import { Connection, Inject } from 'exredux';
-import { appModels } from '../AppModels';
-import { CounterModel } from './CounterModel';
+import * as React from "react";
+import { Connection, Inject } from "exredux";
+import { appModels } from "../AppModels";
+import { CounterModel } from "./CounterModel";
 
 class ModelProps {
   // Inject the model into property
@@ -151,7 +151,7 @@ These Actions are designed to be a Http-Promise based template.
 Is used Axios as http requester.
 
 ```ts
-import { Model, Action, BaseHttpModel } from 'exredux';
+import { Model, Action, BaseHttpModel } from "exredux";
 
 // mocking http request
 const httpDoneRequest = (label: string) =>
@@ -189,10 +189,10 @@ export class HttpHandlerModel extends BaseHttpModel<string> {
 To connection in the http based model, use the same decorators _Connection_ and _Inject_ to get the data and states based on promise:
 
 ```tsx
-import * as React from 'react';
-import { Connection, Inject } from 'exredux';
-import { appModels } from '../AppModels';
-import { HttpHandlerModel } from './HttphandlerModel';
+import * as React from "react";
+import { Connection, Inject } from "exredux";
+import { appModels } from "../AppModels";
+import { HttpHandlerModel } from "./HttphandlerModel";
 
 class ModelProps {
   @Inject httpHandlerModel?: HttpHandlerModel;
@@ -211,26 +211,31 @@ export class HttpHandler extends React.Component<ModelProps> {
         <button onClick={this.handleClickError}>Http Fail</button>
         <button onClick={this.handleReset}>ResetState</button>
 
-        {httpHandlerModel.isCompleted ? <p>From http model => {httpHandlerModel.response.data}</p> : null}
-        {httpHandlerModel.isFailed ? <p>Error From http model => {httpHandlerModel.error.message}</p> : null}
+        {httpHandlerModel.isCompleted ? (
+          <p>From http model => {httpHandlerModel.response.data}</p>
+        ) : null}
+        {httpHandlerModel.isFailed ? (
+          <p>Error From http model => {httpHandlerModel.error.message}</p>
+        ) : null}
         {httpHandlerModel.isLoading ? <p>Loading...</p> : null}
       </div>
     );
   }
 
   handleClick = () => {
-    this.props.httpHandlerModel.getHttpTest('test inserted from HttpComponent');
-  }
+    this.props.httpHandlerModel.getHttpTest("test inserted from HttpComponent");
+  };
 
   handleClickError = () => {
-    this.props.httpHandlerModel.getHttpTestError('error test inserted from HttpComponent');
-  }
+    this.props.httpHandlerModel.getHttpTestError(
+      "error test inserted from HttpComponent"
+    );
+  };
 
-  handleReset = () =>{
+  handleReset = () => {
     this.props.httpHandlerModel.reset();
-  }
+  };
 }
-
 ```
 
 ## Dependency
@@ -238,8 +243,8 @@ export class HttpHandler extends React.Component<ModelProps> {
 You inject models in another models thru _Inject_ decorator:
 
 ```tsx
-import { Model, Action, Inject } from 'exredux';
-import { CounterModel } from 'playground/counter/CounterModel';
+import { Model, Action, Inject } from "exredux";
+import { CounterModel } from "playground/counter/CounterModel";
 
 @Model
 export class ListModel {
@@ -250,10 +255,11 @@ export class ListModel {
 
   @Action add() {
     this.counterModel.add();
-    this.items.push(`Item ${this.items.length} : Counter = ${this.counterModel.counter}`);
+    this.items.push(
+      `Item ${this.items.length} : Counter = ${this.counterModel.counter}`
+    );
   }
 }
-
 ```
 
 ## Triggers
@@ -265,8 +271,8 @@ And must be used to trigger events from another actions.
 This triggers can't be used to listen itself.
 
 ```tsx
-import { Model, Inject, Trigger } from 'exredux';
-import { CounterModel } from 'playground/counter/CounterModel';
+import { Model, Inject, Trigger } from "exredux";
+import { CounterModel } from "playground/counter/CounterModel";
 
 @Model
 export class EventsModel {
@@ -275,7 +281,7 @@ export class EventsModel {
   // dependency from another model
   @Inject counterModel: CounterModel;
 
-  @Trigger(CounterModel, 'add') checkAddCounter() {
+  @Trigger(CounterModel, "add") checkAddCounter() {
     this.message = `Counter updated to = ${this.counterModel.counter}`;
   }
 }
@@ -284,10 +290,10 @@ export class EventsModel {
 The connection is the same as usual model:
 
 ```tsx
-import * as React from 'react';
-import { Connection, Inject } from 'exredux';
-import { appModels } from '../AppModels';
-import { EventsModel } from './EventsModel';
+import * as React from "react";
+import { Connection, Inject } from "exredux";
+import { appModels } from "../AppModels";
+import { EventsModel } from "./EventsModel";
 
 class ModelProps {
   @Inject eventsModel: EventsModel;
@@ -306,7 +312,9 @@ export class Events extends React.Component<Props> {
         Example of Trigger
         <br />
         <p>Message = {eventsModel.message}</p>
-        <button onClick={eventsModel.checkAddCounter}>Manually get event</button>
+        <button onClick={eventsModel.checkAddCounter}>
+          Manually get event
+        </button>
       </div>
     );
   }
@@ -314,6 +322,7 @@ export class Events extends React.Component<Props> {
 ```
 
 Also, the triggers dispatch action to redux state and does not require _Action_ decorator to do it.
+
 ```tsx
 @Action // <=== NOT REQUIRED, Trigger already is an Action
 @Trigger
@@ -359,14 +368,40 @@ But can be used to calculate or change something until some point, and after tha
 export class AvailabilityModel {
   // change state internally only
   changeSomething() {
-    this.stateData = 'something';
+    this.stateData = "something";
   }
 
   // change state internally
   // and dispatch it to the store and components
   @Action
   changeAndDispatch() {
-    this.stateData = 'something changed';
+    this.stateData = "something changed";
+  }
+}
+```
+
+## Provider
+
+A simple Provider components connects your code with the ModelStore.
+
+```tsx
+import * as React from "react";
+
+import { appModels } from "./AppModels";
+import { Counter } from "./counter/Counter";
+import { Provider } from "exredux";
+
+export class Sample extends React.Component {
+  public render() {
+    return (
+      <Provider modelStore={appModels}>
+        <div>
+          Test Application for ExRedux
+          <hr />
+          <Counter />
+        </div>
+      </Provider>
+    );
   }
 }
 ```
@@ -382,5 +417,3 @@ The sample project is available in the source https://github.com/debersonpaula/e
 ## License
 
 [MIT](LICENSE)
-
-
