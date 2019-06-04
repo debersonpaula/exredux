@@ -382,7 +382,8 @@ export class AvailabilityModel {
 
 ## Provider
 
-A simple Provider components connects your code with the ModelStore.
+Instead using Provide from _react-redux_, use directly from __exredux__.
+It's already provide encapsulation for the ModelStore and the redux Provider.
 
 ```tsx
 import * as React from "react";

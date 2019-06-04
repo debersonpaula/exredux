@@ -51,3 +51,30 @@ After:
     ...
   }
 ```
+
+## Provider
+
+Instead using Provide from _react-redux_, use directly from __exredux__.
+It's already provide encapsulation for the ModelStore and the redux Provider.
+
+```tsx
+import * as React from "react";
+
+import { appModels } from "./AppModels";
+import { Counter } from "./counter/Counter";
+import { Provider } from "exredux";
+
+export class Sample extends React.Component {
+  public render() {
+    return (
+      <Provider modelStore={appModels}>
+        <div>
+          Test Application for ExRedux
+          <hr />
+          <Counter />
+        </div>
+      </Provider>
+    );
+  }
+}
+```
