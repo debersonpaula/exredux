@@ -3,21 +3,21 @@ import { AxiosResponse, AxiosError } from 'axios';
 /**
  * Class to be extended for states based on Axios Http requests
  */
-export class IBaseHttpModel<Response> {
+export interface IBaseHttpModel<Response> {
   /**
    * set to true when Promise is on going
    */
-  isLoading: boolean = false;
+  isLoading: boolean;
 
   /**
    * set to true when Promise is done
    */
-  isCompleted: boolean = false;
+  isCompleted: boolean;
 
   /**
    * set to true when Promise is failed
    */
-  isFailed: boolean = false;
+  isFailed: boolean;
 
   /**
    * contains the object from Axios then

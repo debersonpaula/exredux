@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { DECORATOR_TRIGGER } from '../base/consts';
 import {
   createObjectProperties,
-  extractObjectProperties
+  extractObjectList
 } from '../helpers/propertyListCreator';
 import { ITrigger, Type } from '../base/contracts';
 // ----------------------------------------------------------------------------
@@ -14,7 +14,7 @@ export const Trigger = (
 ): MethodDecorator => (target, propertyKey) => {
   const methodName = propertyKey.toString();
 
-  createObjectProperties<ITrigger>(target, DECORATOR_TRIGGER, {
+  createObjectProperties<ITrigger>(target, DECORATOR_TRIGGER, methodName, {
     listenToModel,
     listenToMethod,
     methodName,
@@ -25,7 +25,7 @@ export const Trigger = (
 // --- EXTRACTOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------
 export function getTrigger(target: Object): ITrigger[] {
-  return extractObjectProperties(target, DECORATOR_TRIGGER);
+  return extractObjectList(target, DECORATOR_TRIGGER);
 }
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------

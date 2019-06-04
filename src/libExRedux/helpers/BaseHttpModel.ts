@@ -1,15 +1,12 @@
 import { IBaseHttpModel } from './IBaseHttpModel';
 import { Action } from '../../libStoreModel';
 
-export class BaseHttpModel<T = any> extends IBaseHttpModel<T> {
-  constructor() {
-    super();
-    this.isCompleted = false;
-    this.isFailed = false;
-    this.isLoading = false;
-    this.error = undefined;
-    this.response = undefined;
-  }
+export class BaseHttpModel<T = any> implements IBaseHttpModel<T> {
+  isCompleted = false;
+  isFailed = false;
+  isLoading = false;
+  error = undefined;
+  response = undefined;
 
   @Action
   protected loading() {

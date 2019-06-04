@@ -12,6 +12,7 @@ import {
   IDispatchValues,
   ITrigger
 } from './base/contracts';
+import { breakReferences } from './helpers/propertyListCreator';
 
 export class Store implements IStore {
   _models: IModel[];
@@ -23,7 +24,12 @@ export class Store implements IStore {
       const model = getModel(modelCtor);
       model.instance = new modelCtor();
       model.deps = getInject(model.instance);
-      model.actions = getAction(model.instance);
+      const actions = getAction(model.instance).filter(
+        action =>
+          model.instance.hasOwnProperty(action.methodName) ||
+          typeof model.instance[action.methodName] === 'function'
+      );
+      model.actions = breakReferences(actions);
       model.triggers = getTrigger(model.instance);
       return model;
     });
@@ -56,14 +62,17 @@ export class Store implements IStore {
         trigger.modelName = model.className;
         const triggerFunction = this._defineDispatcher(model, trigger);
 
-        const watchDispatchName = `${trigger.listenToModel.name}.${trigger.listenToMethod}`;
+        const watchDispatchName = `${trigger.listenToModel.name}.${
+          trigger.listenToMethod
+        }`;
 
         // listen to subject "_actionListener"
         this._actionListener.subscribe(obj => {
           if (obj !== null) {
             // check if the name matches
             if (
-              `${obj.action.modelName}.${obj.action.methodName}` === watchDispatchName
+              `${obj.action.modelName}.${obj.action.methodName}` ===
+              watchDispatchName
             ) {
               // trigger the method
               triggerFunction();
