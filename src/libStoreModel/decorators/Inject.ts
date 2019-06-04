@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { DECORATOR_INJECT } from '../base/consts';
 import {
   createObjectProperties,
-  extractObjectProperties
+  extractObjectList
 } from '../helpers/propertyListCreator';
 import { IInject } from '../base/contracts';
 // ----------------------------------------------------------------------------
@@ -10,7 +10,7 @@ import { IInject } from '../base/contracts';
 // ----------------------------------------------------------------------------
 export const Inject: PropertyDecorator = (target, propertyKey) => {
   const propertyType = Reflect.getMetadata('design:type', target, propertyKey);
-  createObjectProperties<IInject>(target, DECORATOR_INJECT, {
+  createObjectProperties<IInject>(target, DECORATOR_INJECT, propertyKey.toString(), {
     propertyName: propertyKey.toString(),
     typeName: propertyType.name
   });
@@ -19,7 +19,7 @@ export const Inject: PropertyDecorator = (target, propertyKey) => {
 // --- EXTRACTOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------
 export function getInject(target: Object): IInject[] {
-  return extractObjectProperties(target, DECORATOR_INJECT);
+  return extractObjectList(target, DECORATOR_INJECT);
 }
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
