@@ -12,7 +12,7 @@ export class Sample extends React.Component {
   public render() {
     return (
       <HashRouter>
-        <Provider modelStore={appModels}>
+        <Provider store={appModels.createStore()}>
           <div>
             Test Application for ExRedux
             <hr />

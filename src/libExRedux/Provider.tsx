@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { Provider as ReactProvider } from 'react-redux';
-import { ModelStore } from './ModelStore';
+import { Store } from 'redux';
 
 interface Props {
-  modelStore: ModelStore;
+  store: Store;
 }
 
 export class Provider extends React.Component<Props> {
   public render() {
     return (
-      <ReactProvider store={this.props.modelStore.createStore()}>
+      <ReactProvider store={this.props.store}>
         {this.props.children}
       </ReactProvider>
     );
