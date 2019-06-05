@@ -5,14 +5,14 @@ import { appModels } from './AppModels';
 import { Counter } from './counter/Counter';
 import { List } from './list/List';
 import { Events } from './events/Events';
-import { HttpHandler } from './http-handler/HttpHandler';
 import { Provider } from 'exredux';
+import { Promised } from './promised/Promised';
 
 export class Sample extends React.Component {
   public render() {
     return (
       <HashRouter>
-        <Provider store={appModels.createStore()}>
+        <Provider modelStore={appModels}>
           <div>
             Test Application for ExRedux
             <hr />
@@ -22,7 +22,7 @@ export class Sample extends React.Component {
             <hr />
             <Events />
             <hr />
-            <HttpHandler />
+            <Promised />
           </div>
         </Provider>
       </HashRouter>
