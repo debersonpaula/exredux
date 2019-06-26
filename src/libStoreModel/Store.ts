@@ -3,15 +3,7 @@ import { getModel } from './decorators/Model';
 import { getInject } from './decorators/Inject';
 import { getAction } from './decorators/Action';
 import { getTrigger } from './decorators/Trigger';
-import {
-  IModel,
-  Type,
-  IStore,
-  IConnection,
-  IAction,
-  IDispatchValues,
-  ITrigger
-} from './base/contracts';
+import { IModel, Type, IStore, IConnection, IAction, IDispatchValues, ITrigger } from './base/contracts';
 import { breakReferences } from './helpers/propertyListCreator';
 
 export class Store implements IStore {
@@ -26,8 +18,7 @@ export class Store implements IStore {
       model.deps = getInject(model.instance);
       const actions = getAction(model.instance).filter(
         action =>
-          model.instance.hasOwnProperty(action.methodName) ||
-          typeof model.instance[action.methodName] === 'function'
+          model.instance.hasOwnProperty(action.methodName) || typeof model.instance[action.methodName] === 'function'
       );
       model.actions = breakReferences(actions);
       model.triggers = getTrigger(model.instance);
@@ -37,12 +28,15 @@ export class Store implements IStore {
     // resolve dependencies
     this._models.forEach(model => {
       model.deps.map(dep => {
-        const depComponent = this._models.find(
-          item => item.className === dep.typeName
-        );
+        const depComponent = this._models.find((item, index) => {
+          if (!item) {
+            throw `ModelStore Error: item number=${index} in the model list is undefined`;
+          }
+          return item.className === dep.typeName;
+        });
         if (!depComponent) {
-          throw `Dependency ${dep.typeName} is injected in ${
-            model.className
+          throw `Dependency ${dep.typeName} is injected in ${model.className} thru property ${
+            dep.propertyName
           } but is not found in model store.`;
         }
         model.instance[dep.propertyName] = depComponent.instance;
@@ -62,18 +56,13 @@ export class Store implements IStore {
         trigger.modelName = model.className;
         const triggerFunction = this._defineDispatcher(model, trigger);
 
-        const watchDispatchName = `${trigger.listenToModel.name}.${
-          trigger.listenToMethod
-        }`;
+        const watchDispatchName = `${trigger.listenToModel.name}.${trigger.listenToMethod}`;
 
         // listen to subject "_actionListener"
         this._actionListener.subscribe(obj => {
           if (obj !== null) {
             // check if the name matches
-            if (
-              `${obj.action.modelName}.${obj.action.methodName}` ===
-              watchDispatchName
-            ) {
+            if (`${obj.action.modelName}.${obj.action.methodName}` === watchDispatchName) {
               // trigger the method
               triggerFunction();
             }
@@ -106,13 +95,9 @@ export class Store implements IStore {
    */
   _connect(target: Function, connection: IConnection) {
     connection.injections.forEach(item => {
-      const model = this._models.find(
-        model => model.className === item.typeName
-      );
+      const model = this._models.find(model => model.className === item.typeName);
       if (!model) {
-        throw `Injection ${item.typeName} is injected in ${
-          target.name
-        } but is not found in model store.`;
+        throw `Injection ${item.typeName} is injected in ${target.name} but is not found in model store.`;
       }
 
       Object.defineProperty(target.prototype, item.propertyName, {

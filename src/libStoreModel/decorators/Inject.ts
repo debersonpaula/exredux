@@ -12,7 +12,8 @@ export const Inject: PropertyDecorator = (target, propertyKey) => {
   const propertyType = Reflect.getMetadata('design:type', target, propertyKey);
   createObjectProperties<IInject>(target, DECORATOR_INJECT, propertyKey.toString(), {
     propertyName: propertyKey.toString(),
-    typeName: propertyType.name
+    typeName: propertyType.name,
+    targetName: target.constructor.name
   });
 };
 // ----------------------------------------------------------------------------
