@@ -41,7 +41,7 @@ export class Store implements IStore {
           item => item.className === dep.typeName
         );
         if (!depComponent) {
-          throw `Dependency ${dep} is injected in ${
+          throw `Dependency ${dep.typeName} is injected in ${
             model.className
           } but is not found in model store.`;
         }
