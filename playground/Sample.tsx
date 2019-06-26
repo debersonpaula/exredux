@@ -7,6 +7,7 @@ import { List } from './list/List';
 import { Events } from './events/Events';
 import { Provider } from 'exredux';
 import { Promised } from './promised/Promised';
+import { MasterComponent } from './subcomponents/MasterComponent';
 
 export class Sample extends React.Component {
   public render() {
@@ -23,6 +24,8 @@ export class Sample extends React.Component {
             <Events />
             <hr />
             <Promised />
+            <hr />
+            <MasterComponent />
           </div>
         </Provider>
       </HashRouter>
