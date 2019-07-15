@@ -1,5 +1,5 @@
 import { Model, Action, Inject } from 'exredux';
-import { CounterModel } from 'playground/counter/CounterModel';
+import { CounterModel } from '../counter/CounterModel';
 
 @Model
 export class ListModel {

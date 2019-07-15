@@ -1,5 +1,5 @@
 import { Model, Inject, Trigger } from 'exredux';
-import { CounterModel } from 'playground/counter/CounterModel';
+import { CounterModel } from '../counter/CounterModel';
 
 @Model
 export class EventsModel {
