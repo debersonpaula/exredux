@@ -3,12 +3,12 @@ import { getModel } from './decorators/Model';
 import { getInject } from './decorators/Inject';
 import { getAction } from './decorators/Action';
 import { getTrigger } from './decorators/Trigger';
-import { IModel, Type, IStore, IConnection, IAction, IDispatchValues, ITrigger } from './base/contracts';
+import { IModel, Type, IConnection, IAction, IDispatchValues, ITrigger } from './base/contracts';
 import { breakReferences } from './helpers/propertyListCreator';
 
-export class Store implements IStore {
-  _models: IModel[];
-  _actionListener = new BehaviorSubject<IDispatchValues>(null);
+export class Store {
+  protected _models: IModel[];
+  protected _actionListener = new BehaviorSubject<IDispatchValues>(null);
 
   constructor(models: Type<any>[]) {
     // create models
@@ -72,6 +72,11 @@ export class Store implements IStore {
     });
   }
 
+  public modelByClass<T>(modelType: Type<T>): T {
+    const result = this._models.find(item => item.ctor === modelType).instance;
+    return result;
+  }
+
   // tslint:disable:function-name
   private _defineDispatcher(model: IModel, action: IAction | ITrigger) {
     // keep current handler
@@ -93,7 +98,7 @@ export class Store implements IStore {
    * @param target Target class constructor
    * @param connection Connection object
    */
-  _connect(target: Function, connection: IConnection) {
+  public _connect(target: any, connection: IConnection) {
     connection.injections.forEach(item => {
       const model = this._models.find(model => model.className === item.typeName);
       if (!model) {
@@ -117,7 +122,7 @@ export class Store implements IStore {
    * @param action dispatched action
    * @param payload object with dispatched payload
    */
-  _dispatch(action: IAction, payload: Object) {
+  protected _dispatch(action: IAction, payload: Object) {
     this._actionListener.next({ action, payload });
   }
 }

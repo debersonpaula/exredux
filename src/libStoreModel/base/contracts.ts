@@ -64,7 +64,7 @@ export interface IModel {
   /**
    * Class instance
    */
-  instance: Object;
+  instance: any;
 
   /**
    * List of actions
@@ -83,13 +83,6 @@ export interface IConnection {
    * Dependencies injections
    */
   injections: IInject[];
-}
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
-export interface IStore {
-  _models: IModel[];
-  _connect: (target: Function, connection: IConnection) => any;
-  _dispatch: (action: IAction, payload: Object) => void;
 }
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------

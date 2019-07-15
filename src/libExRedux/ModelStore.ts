@@ -17,7 +17,7 @@ export class ModelStore extends BaseStore {
     // -----------------------------------------------------
     // create basic store
     if (param.devExtension) {
-      this._store = reduxCreateStore(()=>{}, devToolsEnhancer({}));
+      this._store = reduxCreateStore(() => {}, devToolsEnhancer({}));
     } else {
       this._store = reduxCreateStore(() => {});
     }
@@ -30,9 +30,9 @@ export class ModelStore extends BaseStore {
         if (!this._models.find(item => model.typeName === item.className)) {
           // tslint:disable-next-line: no-console
           console.error(
-            `Property ${model.propertyName} is injected as ${
-              model.typeName
-            } in ${target.name} can't not be found in model store.`
+            `Property ${model.propertyName} is injected as ${model.typeName} in ${
+              target.name
+            } can't not be found in model store.`
           );
         }
       });
@@ -50,7 +50,7 @@ export class ModelStore extends BaseStore {
   }
 
   // tslint:disable-next-line: function-name
-  _dispatch(action: IAction, payload: Object) {
+  protected _dispatch(action: IAction, payload: Object) {
     this._store.dispatch<IDispatcherParams>({
       payload,
       type: `${action.modelName}.${action.methodName}`,
@@ -92,10 +92,7 @@ export class ModelStore extends BaseStore {
       // extract name from state constructor
       const stateName = model.className;
       // create reducer evaluation
-      reducers[stateName] = (
-        currentState = Object.assign({}, model.instance),
-        action: IDispatcherParams
-      ) => {
+      reducers[stateName] = (currentState = Object.assign({}, model.instance), action: IDispatcherParams) => {
         if (action.modelName === model.className) {
           return { ...currentState, ...action.payload };
         }
