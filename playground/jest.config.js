@@ -1,17 +1,13 @@
 module.exports = {
-  testMatch: [`<rootDir>/**/*.test.{js,jsx,ts,tsx}`],
-  moduleFileExtensions: ['ts', 'tsx', 'js'],
-  setupFiles: [
-    require.resolve('../test/test-setup'),
-    require.resolve('../test/test-shim'),
-  ],
-  verbose: true,
-  transform: { '^.+\\.(ts|tsx)$': require.resolve('../test/babelTransform') },
-  moduleNameMapper: {
-    'exredux': '<rootDir>/../src/index.ts'
-  },
   collectCoverage: true,
-  coverageReporters: ['json', 'html', 'lcovonly'],
   collectCoverageFrom: [`**/*.{ts,tsx}`],
-  coverageDirectory : '<rootDir>/../coverage'
-}
+  coverageDirectory: '<rootDir>/../coverage',
+  coverageReporters: ['json', 'html', 'lcovonly'],
+  moduleFileExtensions: ['ts', 'tsx', 'js'],
+  moduleNameMapper: { exredux: '<rootDir>/../src/index.ts' },
+  setupFiles: [require.resolve('../test/test-setup'), require.resolve('../test/test-shim')],
+  snapshotSerializers: ['enzyme-to-json/serializer'],
+  testMatch: [`<rootDir>/**/*.test.{js,jsx,ts,tsx}`],
+  transform: { '^.+\\.(ts|tsx)$': require.resolve('../test/babelTransform') },
+  verbose: true
+};

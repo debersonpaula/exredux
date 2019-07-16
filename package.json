@@ -14,7 +14,7 @@
     "types": "tsc --project tsconfig.types.json --emitDeclarationOnly",
     "deploy": "npm run build && cd dist && npm publish",
     "deploy:next": "npm run build && cd dist && npm publish --tag next",
-    "test:pg": "jest --config playground/jest.config.js"
+    "test:pg": "jest --config playground/jest.config.js --u"
   },
   "author": "D.A.Paula <deberson.paula@gmail.com>",
   "license": "MIT",
@@ -53,6 +53,7 @@
     "babel-plugin-transform-typescript-metadata": "0.2.2",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
+    "enzyme-to-json": "^3.3.5",
     "eslint": "5.16.0",
     "html-webpack-plugin": "3.2.0",
     "jest": "^24.8.0",
