@@ -28,8 +28,10 @@ describe('Counter', () => {
     );
 
     // ASSERT
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper).toBeTruthy();
-    expect(wrapper.find('p').text()).toEqual('Counter = 2');
+    expect(wrapper.find('#counter-result').text()).toEqual('Counter = 2');
+    expect(wrapper.find('#action-result').text()).toEqual('Last Action = del');
   });
   // -------------------------------------------------------
 });

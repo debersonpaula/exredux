@@ -14,7 +14,7 @@
     "types": "tsc --project tsconfig.types.json --emitDeclarationOnly",
     "deploy": "npm run build && cd dist && npm publish",
     "deploy:next": "npm run build && cd dist && npm publish --tag next",
-    "test:pg": "jest --config playground/jest.config.js --u"
+    "test:pg": "jest --config playground/jest.config.js"
   },
   "author": "D.A.Paula <deberson.paula@gmail.com>",
   "license": "MIT",

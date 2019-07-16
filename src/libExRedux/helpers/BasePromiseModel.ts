@@ -1,4 +1,5 @@
-import { Action } from '../../libStoreModel';
+import { Action, Event } from '../../libStoreModel';
+import { Subject } from 'rxjs';
 
 export class BasePromiseModel<T, E> {
   /**
@@ -17,15 +18,26 @@ export class BasePromiseModel<T, E> {
   isLoading: boolean = false;
 
   /**
-   * contains the object from Axios then
+   * contains the object from Axios > then
    */
   response?: T;
 
   /**
-   * contains the object from Axios catch
+   * contains the object from Axios > catch
    */
   error?: E;
-  
+
+  /**
+   * contains the object of response
+   * trigger everytime with the completed event
+   */
+  responseAsync = new Subject<T>();
+
+  /**
+   * contains the object of error
+   * trigger everytime with the failed event
+   */
+  errorAsync = new Subject<E>();
 
   /**
    * Start the state = loading
@@ -63,9 +75,7 @@ export class BasePromiseModel<T, E> {
   @Action
   protected request(httpRequest: Promise<T>) {
     this.loading();
-    httpRequest
-      .then(response => this.completed(response))
-      .catch(error => this.failed(error));
+    httpRequest.then(response => this.completed(response)).catch(error => this.failed(error));
   }
 
   @Action
@@ -75,5 +85,15 @@ export class BasePromiseModel<T, E> {
     this.isFailed = false;
     this.response = undefined;
     this.error = undefined;
+  }
+
+  @Event('completed')
+  protected completedAsync() {
+    this.responseAsync.next(this.response);
+  }
+
+  @Event('failed')
+  protected failedAsync() {
+    this.errorAsync.next(this.error);
   }
 }

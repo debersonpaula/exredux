@@ -18,13 +18,13 @@ export class Promised extends React.Component<ModelProps> {
     const { promisedModel, promisedHttpModel } = this.props;
     return (
       <div>
-        <button onClick={this.handleClick}>Promise Done</button>
-        <button onClick={this.handleClickError}>Promise Fail</button>
+        <button onClick={this.handleClick} id="promise-done">Promise Done</button>
+        <button onClick={this.handleClickError} id="promise-fail">Promise Fail</button>
         <button onClick={this.handleReset}>ResetState</button>
 
-        {promisedModel.isCompleted ? <p>From Promise model => {promisedModel.response}</p> : null}
-        {promisedModel.isFailed ? <p>Error From Promise model => {promisedModel.error}</p> : null}
-        {promisedModel.isLoading ? <p>Loading...</p> : null}
+        {promisedModel.isCompleted ? <p id="promise-done-result">From Promise model => {promisedModel.response}</p> : null}
+        {promisedModel.isFailed ? <p id="promise-fail-result">Error From Promise model => {promisedModel.error}</p> : null}
+        {promisedModel.isLoading ? <p>Promise Loading...</p> : null}
 
         <hr />
 
@@ -34,17 +34,17 @@ export class Promised extends React.Component<ModelProps> {
 
         {promisedHttpModel.isCompleted ? <p>From http model => {JSON.stringify(promisedHttpModel.response.data)}</p> : null}
         {promisedHttpModel.isFailed ? <p>Error From http model. Error status = {promisedHttpModel.error.response.status}</p> : null}
-        {promisedHttpModel.isLoading ? <p>Loading...</p> : null}
+        {promisedHttpModel.isLoading ? <p>Http Loading...</p> : null}
       </div>
     );
   }
 
   handleClick = () => {
-    this.props.promisedModel.getDone('test inserted from HttpComponent');
+    this.props.promisedModel.getDone('test inserted from PromisedComponent');
   };
 
   handleClickError = () => {
-    this.props.promisedModel.getError('error test inserted from HttpComponent');
+    this.props.promisedModel.getError('error test inserted from PromisedComponent');
   };
 
   handleReset = () => {
