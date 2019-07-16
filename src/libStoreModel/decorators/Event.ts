@@ -1,26 +1,24 @@
 import 'reflect-metadata';
-import { DECORATOR_MODEL } from '../base/consts';
-import { IModel } from '../base/contracts';
+import { DECORATOR_EVENT } from '../base/consts';
+import { createObjectProperties, extractObjectList } from '../helpers/propertyListCreator';
+import { IEvent } from '../base/contracts';
 // ----------------------------------------------------------------------------
 // --- DECORATOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------
-export const Model: ClassDecorator = target => {
-  const metadata: IModel = {
-    className: target.name,
-    deps: [],
-    ctor: target,
-    instance: null,
-    actions: [],
-    triggers: [],
-    events: []
-  };
-  Reflect.defineMetadata(DECORATOR_MODEL, metadata, target);
+export const Event = (listenToMethod: string): MethodDecorator => (target, propertyKey) => {
+  const methodName = propertyKey.toString();
+
+  createObjectProperties<IEvent>(target, DECORATOR_EVENT, methodName, {
+    listenToMethod,
+    methodName,
+    modelName: ''
+  });
 };
 // ----------------------------------------------------------------------------
 // --- EXTRACTOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------
-export function getModel(target: Function): IModel {
-  return Reflect.getMetadata(DECORATOR_MODEL, target) || undefined;
+export function getEvent(target: Object): IEvent[] {
+  return extractObjectList(target, DECORATOR_EVENT);
 }
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------

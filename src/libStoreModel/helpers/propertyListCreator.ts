@@ -4,7 +4,6 @@ export function createObjectProperties<T>(
   propertyName: string,
   metadata: T
 ) {
-  
   // define metadata if not exists
   if (!Reflect.hasMetadata(metaname, target)) {
     Reflect.defineMetadata(metaname, {}, target);
@@ -15,17 +14,11 @@ export function createObjectProperties<T>(
   metadataList[propertyName] = Object.assign({}, metadata);
 }
 
-export function extractObjectProperties<T>(
-  target: Object,
-  metaname: string | symbol
-): MetaList<T> {
+export function extractObjectProperties<T>(target: Object, metaname: string | symbol): MetaList<T> {
   return Reflect.getMetadata(metaname, target) || {};
 }
 
-export function extractObjectList<T>(
-  target: Object,
-  metaname: string | symbol
-): T[] {
+export function extractObjectList<T>(target: Object, metaname: string | symbol): T[] {
   const metadataList = extractObjectProperties<T>(target, metaname);
   return Object.keys(metadataList).map(key => metadataList[key]);
 }

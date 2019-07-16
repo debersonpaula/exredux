@@ -1,14 +1,15 @@
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { getModel } from './decorators/Model';
 import { getInject } from './decorators/Inject';
 import { getAction } from './decorators/Action';
 import { getTrigger } from './decorators/Trigger';
-import { IModel, Type, IStore, IConnection, IAction, IDispatchValues, ITrigger } from './base/contracts';
+import { getEvent } from './decorators/Event';
+import { IModel, Type, IConnection, IAction, IDispatchValues, ITrigger } from './base/contracts';
 import { breakReferences } from './helpers/propertyListCreator';
 
-export class Store implements IStore {
-  _models: IModel[];
-  _actionListener = new BehaviorSubject<IDispatchValues>(null);
+export class Store {
+  protected _models: IModel[];
+  protected _actionListener = new Subject<IDispatchValues>();
 
   constructor(models: Type<any>[]) {
     // create models
@@ -22,6 +23,7 @@ export class Store implements IStore {
       );
       model.actions = breakReferences(actions);
       model.triggers = getTrigger(model.instance);
+      model.events = breakReferences(getEvent(model.instance));
       return model;
     });
 
@@ -69,7 +71,30 @@ export class Store implements IStore {
           }
         });
       });
+
+      // Events
+      model.events.forEach(ev => {
+        ev.modelName = model.className;
+        const evFunction = this._defineDispatcher(model, ev);
+        const watchDispatchName = `${model.className}.${ev.listenToMethod}`;
+
+        // listen to subject "_actionListener"
+        this._actionListener.subscribe(obj => {
+          if (obj !== null) {
+            // check if the name matches
+            if (`${obj.action.modelName}.${obj.action.methodName}` === watchDispatchName) {
+              // trigger the method
+              evFunction();
+            }
+          }
+        });
+      });
     });
+  }
+
+  public modelByClass<T>(modelType: Type<T>): T {
+    const result = this._models.find(item => item.ctor === modelType).instance;
+    return result;
   }
 
   // tslint:disable:function-name
@@ -93,7 +118,7 @@ export class Store implements IStore {
    * @param target Target class constructor
    * @param connection Connection object
    */
-  _connect(target: Function, connection: IConnection) {
+  public _connect(target: any, connection: IConnection) {
     connection.injections.forEach(item => {
       const model = this._models.find(model => model.className === item.typeName);
       if (!model) {
@@ -117,7 +142,7 @@ export class Store implements IStore {
    * @param action dispatched action
    * @param payload object with dispatched payload
    */
-  _dispatch(action: IAction, payload: Object) {
+  protected _dispatch(action: IAction, payload: Object) {
     this._actionListener.next({ action, payload });
   }
 }

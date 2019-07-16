@@ -1,7 +1,8 @@
 import 'reflect-metadata';
 import { DECORATOR_CONNECTION } from '../base/consts';
-import { IConnection, Type, IStore } from '../base/contracts';
+import { IConnection, Type } from '../base/contracts';
 import { getInject } from './Inject';
+import { Store } from '../Store';
 // ----------------------------------------------------------------------------
 // --- DECORATOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------
@@ -21,7 +22,7 @@ interface IConnectionParams {
   /**
    * ModelStore object
    */
-  modelStore: IStore;
+  modelStore: Store;
 
   /**
    * Properties class

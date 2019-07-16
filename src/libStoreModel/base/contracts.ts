@@ -45,6 +45,14 @@ export interface ITrigger extends IAction {
 }
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
+export interface IEvent extends IAction {
+  /**
+   * Name of method to be listened
+   */
+  listenToMethod: string;
+}
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 export interface IModel {
   /**
    * Name of class
@@ -64,7 +72,7 @@ export interface IModel {
   /**
    * Class instance
    */
-  instance: Object;
+  instance: any;
 
   /**
    * List of actions
@@ -75,6 +83,11 @@ export interface IModel {
    * List of triggers
    */
   triggers: ITrigger[];
+
+  /**
+   * List of events
+   */
+  events: IEvent[];
 }
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
@@ -83,13 +96,6 @@ export interface IConnection {
    * Dependencies injections
    */
   injections: IInject[];
-}
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
-export interface IStore {
-  _models: IModel[];
-  _connect: (target: Function, connection: IConnection) => any;
-  _dispatch: (action: IAction, payload: Object) => void;
 }
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------

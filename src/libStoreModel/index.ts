@@ -6,3 +6,4 @@ export * from './decorators/Connection';
 export * from './decorators/Inject';
 export * from './decorators/Model';
 export * from './decorators/Trigger';
+export * from './decorators/Event';
