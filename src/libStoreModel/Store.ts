@@ -1,14 +1,15 @@
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { getModel } from './decorators/Model';
 import { getInject } from './decorators/Inject';
 import { getAction } from './decorators/Action';
 import { getTrigger } from './decorators/Trigger';
+import { getEvent } from './decorators/Event';
 import { IModel, Type, IConnection, IAction, IDispatchValues, ITrigger } from './base/contracts';
 import { breakReferences } from './helpers/propertyListCreator';
 
 export class Store {
   protected _models: IModel[];
-  protected _actionListener = new BehaviorSubject<IDispatchValues>(null);
+  protected _actionListener = new Subject<IDispatchValues>();
 
   constructor(models: Type<any>[]) {
     // create models
@@ -22,6 +23,7 @@ export class Store {
       );
       model.actions = breakReferences(actions);
       model.triggers = getTrigger(model.instance);
+      model.events = breakReferences(getEvent(model.instance));
       return model;
     });
 
@@ -65,6 +67,24 @@ export class Store {
             if (`${obj.action.modelName}.${obj.action.methodName}` === watchDispatchName) {
               // trigger the method
               triggerFunction();
+            }
+          }
+        });
+      });
+
+      // Events
+      model.events.forEach(ev => {
+        ev.modelName = model.className;
+        const evFunction = this._defineDispatcher(model, ev);
+        const watchDispatchName = `${model.className}.${ev.listenToMethod}`;
+
+        // listen to subject "_actionListener"
+        this._actionListener.subscribe(obj => {
+          if (obj !== null) {
+            // check if the name matches
+            if (`${obj.action.modelName}.${obj.action.methodName}` === watchDispatchName) {
+              // trigger the method
+              evFunction();
             }
           }
         });
