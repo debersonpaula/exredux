@@ -11,7 +11,8 @@ export const Model: ClassDecorator = target => {
     ctor: target,
     instance: null,
     actions: [],
-    triggers: []
+    triggers: [],
+    events: []
   };
   Reflect.defineMetadata(DECORATOR_MODEL, metadata, target);
 };
