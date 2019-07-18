@@ -34,4 +34,22 @@ describe('Counter', () => {
     expect(wrapper.find('#action-result').text()).toEqual('Last Action = del');
   });
   // -------------------------------------------------------
+  it('should render with model changed manually', () => {
+    // PREPARE
+    const model = appModels.modelByClass(CounterModel);
+    model.counter = 7;
+    appModels.forceUpdate(CounterModel);    
+
+    // ACT
+    const wrapper = mount(
+      <Provider modelStore={appModels}>
+        <Counter />
+      </Provider>
+    );
+
+    // ASSERT
+    expect(wrapper).toBeTruthy();
+    expect(wrapper.find('#counter-result').text()).toEqual('Counter = 7');
+  });
+  // -------------------------------------------------------
 });

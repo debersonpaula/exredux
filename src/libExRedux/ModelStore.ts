@@ -1,7 +1,7 @@
 import { Store, createStore as reduxCreateStore, combineReducers } from 'redux';
 import { connect } from 'react-redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
-import { Store as BaseStore, IConnection, IAction } from '../libStoreModel';
+import { Store as BaseStore, IConnection, IAction, Type } from '../libStoreModel';
 import { IModelStoreParams } from './IModelStoreParams';
 // ----------------------------------------------------------------------------
 // --- COMPONENT --------------------------------------------------------------
@@ -57,6 +57,21 @@ export class ModelStore extends BaseStore {
       modelName: action.modelName
     });
     super._dispatch(action, payload);
+  }
+
+  /**
+   * Force update to redux store
+   * of desired model
+   */
+  forceUpdate(modelType: Type<any>) {
+    const model = this._models.find(item => item.ctor === modelType);
+    if (model) {
+      this._store.dispatch<IDispatcherParams>({
+        payload: model.instance,
+        type: '__force_update__',
+        modelName: modelType.name
+      });
+    }
   }
 
   /**
