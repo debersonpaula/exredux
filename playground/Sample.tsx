@@ -8,6 +8,7 @@ import { Events } from './events/Events';
 import { Provider } from 'exredux';
 import { Promised } from './promised/Promised';
 import { MasterComponent } from './subcomponents/MasterComponent';
+import { InheritedComponent } from './inheritance/InheritedComponent';
 
 export class Sample extends React.Component {
   public render() {
@@ -26,6 +27,8 @@ export class Sample extends React.Component {
             <Promised />
             <hr />
             <MasterComponent />
+            <hr />
+            <InheritedComponent />
           </div>
         </Provider>
       </HashRouter>

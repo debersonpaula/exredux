@@ -6,8 +6,22 @@ import { PromisedModel } from './promised/PromisedModel';
 import { PromisedHttpModel } from './promised/PromisedHttpModel';
 import { MasterModel } from './subcomponents/MasterModel';
 import { ChildModel } from './subcomponents/ChildModel';
+import { InheritedModelOne } from './inheritance/InheritedModelOne';
+import { InheritedModelTwo } from './inheritance/InheritedModelTwo';
+import { InheritedModelContainer } from './inheritance/InheritedModelContainer';
 
 export const appModels = new ModelStore({
   devExtension: true,
-  models: [CounterModel, ListModel, EventsModel, PromisedModel, PromisedHttpModel, MasterModel, ChildModel]
+  models: [
+    CounterModel,
+    ListModel,
+    EventsModel,
+    PromisedModel,
+    PromisedHttpModel,
+    MasterModel,
+    ChildModel,
+    InheritedModelContainer,
+    InheritedModelOne,
+    InheritedModelTwo
+  ]
 });

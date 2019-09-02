@@ -37,9 +37,7 @@ export class Store {
           return item.className === dep.typeName;
         });
         if (!depComponent) {
-          throw `Dependency ${dep.typeName} is injected in ${model.className} thru property ${
-            dep.propertyName
-          } but is not found in model store.`;
+          throw `Dependency ${dep.typeName} is injected in ${model.className} thru property ${dep.propertyName} but is not found in model store.`;
         }
         model.instance[dep.propertyName] = depComponent.instance;
       });
@@ -76,18 +74,21 @@ export class Store {
       model.events.forEach(ev => {
         ev.modelName = model.className;
         const evFunction = this._defineDispatcher(model, ev);
-        const watchDispatchName = `${model.className}.${ev.listenToMethod}`;
 
-        // listen to subject "_actionListener"
-        this._actionListener.subscribe(obj => {
-          if (obj !== null) {
-            // check if the name matches
-            if (`${obj.action.modelName}.${obj.action.methodName}` === watchDispatchName) {
-              // trigger the method
-              evFunction();
+        if (evFunction) {
+          const watchDispatchName = `${model.className}.${ev.listenToMethod}`;
+
+          // listen to subject "_actionListener"
+          this._actionListener.subscribe(obj => {
+            if (obj !== null) {
+              // check if the name matches
+              if (`${obj.action.modelName}.${obj.action.methodName}` === watchDispatchName) {
+                // trigger the method
+                evFunction();
+              }
             }
-          }
-        });
+          });
+        }
       });
     });
   }
@@ -101,16 +102,22 @@ export class Store {
   private _defineDispatcher(model: IModel, action: IAction | ITrigger) {
     // keep current handler
     const stateHandler: Function = model.instance[action.methodName];
-    // associate action dispatcher
-    const dipatcherHandler = (...args: any) => {
-      // call current handler with model
-      // in this parameter
-      stateHandler.call(model.instance, ...args);
-      // dispatch actions with payload
-      this._dispatch(action, model.instance);
-    };
-    model.instance[action.methodName] = dipatcherHandler;
-    return dipatcherHandler;
+
+    if (stateHandler && typeof stateHandler === 'function') {
+      // associate action dispatcher
+      const dipatcherHandler = (...args: any) => {
+        // call current handler with model
+        // in this parameter
+        stateHandler.call(model.instance, ...args);
+
+        // dispatch actions with payload
+        this._dispatch(action, model.instance);
+      };
+      model.instance[action.methodName] = dipatcherHandler;
+      return dipatcherHandler;
+    }
+
+    return null;
   }
 
   /**
