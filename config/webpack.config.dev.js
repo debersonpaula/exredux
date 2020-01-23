@@ -6,6 +6,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
+  devtool: 'cheap-module-source-map',
   devServer: {
     port: '8001',
     hot: true,

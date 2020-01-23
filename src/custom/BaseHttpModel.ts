@@ -1,7 +1,7 @@
-import { AxiosResponse, AxiosError } from '../../axios';
-import { Action } from '../../libStoreModel';
+import { AxiosResponse, AxiosError } from '../axios';
 import { AxiosPromise } from 'axios';
 import { BasePromiseModel } from './BasePromiseModel';
+import { Action } from '../decorators/Action';
 
 export class BaseHttpModel<T> extends BasePromiseModel<AxiosResponse<T>, AxiosError> {
   @Action

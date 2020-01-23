@@ -1,8 +1,7 @@
-import { Model, Inject, Action } from 'exredux';
+import { Inject, Action } from 'exredux';
 import { InheritedModelOne } from './InheritedModelOne';
 import { InheritedModelTwo } from './InheritedModelTwo';
 
-@Model
 export class InheritedModelContainer {
   @Inject private inheritedModelOne: InheritedModelOne;
   @Inject private inheritedModelTwo: InheritedModelTwo;

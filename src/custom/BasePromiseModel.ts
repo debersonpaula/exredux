@@ -1,5 +1,6 @@
-import { Action, Event } from '../../libStoreModel';
 import { Subject } from 'rxjs';
+import { Action } from '../decorators/Action';
+import { Trigger } from '../decorators/Trigger';
 
 export class BasePromiseModel<T, E> {
   /**
@@ -87,12 +88,12 @@ export class BasePromiseModel<T, E> {
     this.error = undefined;
   }
 
-  @Event('completed')
+  @Trigger('completed')
   protected completedAsync() {
     this.responseAsync.next(this.response);
   }
 
-  @Event('failed')
+  @Trigger('failed')
   protected failedAsync() {
     this.errorAsync.next(this.error);
   }

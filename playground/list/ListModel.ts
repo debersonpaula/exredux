@@ -1,7 +1,6 @@
-import { Model, Action, Inject } from 'exredux';
+import { Action, Inject } from 'exredux';
 import { CounterModel } from '../counter/CounterModel';
 
-@Model
 export class ListModel {
   items: string[] = [];
 

@@ -1,6 +1,5 @@
-import { Model, Action, Event } from 'exredux';
+import { Action, Trigger } from 'exredux';
 
-@Model
 export class CounterModel {
   counter = 0;
   lastAction = '';
@@ -13,12 +12,12 @@ export class CounterModel {
     this.counter -= 1;
   }
 
-  @Event('add')
+  @Trigger('add')
   lastActionAdd() {
     this.lastAction = 'add';
   }
 
-  @Event('del')
+  @Trigger('del')
   lastActionDel() {
     this.lastAction = 'del';
   }

@@ -1,0 +1,3 @@
+export const DECORATOR_INJECT = Symbol('DECORATOR_INJECT');
+export const DECORATOR_ACTION = Symbol('DECORATOR_ACTION');
+export const DECORATOR_TRIGGER = Symbol('DECORATOR_TRIGGER');

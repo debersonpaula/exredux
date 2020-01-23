@@ -1,6 +1,5 @@
 const path = require('path');
 const rootDir = path.resolve(__dirname, '../');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
 	mode: 'production',
@@ -26,16 +25,7 @@ module.exports = {
 		umdNamedDefine: true
 	},
 	optimization: {
-		minimizer: [
-			new UglifyJsPlugin({
-				parallel: true,
-				uglifyOptions: {
-					compress: true,
-					mangle: true
-				},
-				sourceMap: true
-			})
-		]
+		minimize: true,
 	},
 	externals: {
 		react: {

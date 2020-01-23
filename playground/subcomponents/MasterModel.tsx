@@ -1,4 +1,4 @@
-import { Model, Action, BasePromiseModel } from 'exredux';
+import { Action, BasePromiseModel } from 'exredux';
 
 // mocking promise request
 const promiseResolve = (label: string) =>
@@ -8,7 +8,6 @@ const promiseResolve = (label: string) =>
     }, 500);
   });
 
-@Model
 export class MasterModel extends BasePromiseModel<string, string> {
   @Action getDone(label: string) {
     this.request(promiseResolve(label));

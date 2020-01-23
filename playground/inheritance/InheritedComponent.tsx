@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Connection, Inject } from 'exredux';
-import { appModels } from '../AppModels';
 import { InheritedModelOne } from './InheritedModelOne';
 import { BaseModel } from './BaseModel';
 import { InheritedModelTwo } from './InheritedModelTwo';
@@ -13,10 +12,7 @@ class ModelProps {
 }
 type Props = Partial<ModelProps>;
 
-@Connection({
-  modelStore: appModels,
-  props: ModelProps
-})
+@Connection(ModelProps)
 export class InheritedComponent extends React.Component<Props> {
   render() {
     const { inheritedModelOne, inheritedModelTwo, inheritedModelContainer } = this.props;
@@ -32,7 +28,7 @@ export class InheritedComponent extends React.Component<Props> {
   renderComponent = (caption: string, callback: () => void, model: BaseModel) => (
     <div>
       <h3>{caption}:</h3>
-      <button onClick={callback}>Add One</button>
+      <button onClick={callback}>Add to {caption}</button>
       {model.logs.map((item, index) => (
         <p key={index}>{item}</p>
       ))}

@@ -1,10 +1,7 @@
 import 'reflect-metadata';
-import { DECORATOR_ACTION } from '../base/consts';
-import {
-  createObjectProperties,
-  extractObjectList
-} from '../helpers/propertyListCreator';
-import { IAction } from '../base/contracts';
+import { IAction } from '../interfaces/IAction';
+import { DECORATOR_ACTION } from '../interfaces/Symbols';
+import { createObjectProperties, extractObjectList } from '../helpers/propertyListCreator';
 // ----------------------------------------------------------------------------
 // --- DECORATOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------
@@ -13,14 +10,14 @@ export const Action: MethodDecorator = (target, propertyKey) => {
 
   createObjectProperties<IAction>(target, DECORATOR_ACTION, methodName, {
     methodName,
-    modelName: ''
+    modelName: '',
   });
 };
 // ----------------------------------------------------------------------------
 // --- EXTRACTOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------
 export function getAction(target: Object): IAction[] {
-  return extractObjectList(target, DECORATOR_ACTION);
+  return extractObjectList(target, DECORATOR_ACTION, 'function');
 }
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
