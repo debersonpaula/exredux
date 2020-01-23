@@ -18,7 +18,7 @@ export const Inject: PropertyDecorator = (target, propertyKey) => {
 // --- EXTRACTOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------
 export function getInject(target: Object): IInject[] {
-  return extractObjectList(target, DECORATOR_INJECT);
+  return extractObjectList(target, DECORATOR_INJECT, 'object');
 }
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------

@@ -17,7 +17,7 @@ export const Action: MethodDecorator = (target, propertyKey) => {
 // --- EXTRACTOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------
 export function getAction(target: Object): IAction[] {
-  return extractObjectList(target, DECORATOR_ACTION);
+  return extractObjectList(target, DECORATOR_ACTION, 'function');
 }
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------

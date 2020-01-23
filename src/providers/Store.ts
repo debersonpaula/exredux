@@ -11,6 +11,7 @@ import { getInject } from '../decorators/Inject';
 import { getTrigger } from '../decorators/Trigger';
 
 import { breakReferences } from '../helpers/propertyListCreator';
+import logger from '../helpers/logger';
 
 type SetStatehandler = (state: any, callback?: () => void) => void;
 
@@ -29,12 +30,7 @@ export class Store {
         className: modelName,
         instance: modelInstance,
         deps: getInject(modelInstance),
-        actions: breakReferences(
-          getAction(modelInstance).filter(
-            action =>
-              modelInstance.hasOwnProperty(action.methodName) || typeof modelInstance[action.methodName] === 'function'
-          )
-        ),
+        actions: breakReferences(getAction(modelInstance)),
         triggers: getTrigger(modelInstance),
       };
 
@@ -46,12 +42,14 @@ export class Store {
       model.deps.map(dep => {
         const depComponent = this._models.find((item, index) => {
           if (!item) {
-            throw `ModelStore Error: item number=${index} in the model list is undefined`;
+            throw new Error(`ModelStore Error: item number=${index} in the model list is undefined`);
           }
           return item.className === dep.typeName;
         });
         if (!depComponent) {
-          throw `Dependency ${dep.typeName} is injected in ${model.className} thru property ${dep.propertyName} but is not found in model store.`;
+          throw new Error(
+            `Dependency ${dep.typeName} is injected in ${model.className} thru property ${dep.propertyName} but is not found in model store.`
+          );
         }
         model.instance[dep.propertyName] = depComponent.instance;
       });
@@ -104,13 +102,18 @@ export class Store {
     const dipatcherHandler = (...args: any) => {
       // call current handler with model
       // in this parameter
-      stateHandler.call(model.instance, ...args);
+      try {
+        stateHandler.call(model.instance, ...args);
 
-      // change state
-      this._setState({ [model.className]: model.instance }, () => {
-        // dispatch actions with payload
-        this._broadcast(action, model.instance);
-      });
+        // change state
+        this._setState({ [model.className]: model.instance }, () => {
+          // dispatch actions with payload
+          this._broadcast(action, model.instance);
+        });
+      } catch (error) {
+        const obj = { routine: '_defineDispatcher', method: action.methodName, modelName: model.className };
+        logger.error('EXREDUX ERROR: _defineDispatcher', obj, error);
+      }
     };
     model.instance[action.methodName] = dipatcherHandler;
     return dipatcherHandler;
@@ -121,7 +124,7 @@ export class Store {
    * @param action dispatched action
    * @param payload object with dispatched payload
    */
-  private _broadcast(action: IAction, payload: Object) {
+  private _broadcast(action: IAction, payload: object) {
     this._actionListener.next({ action, payload });
   }
 }

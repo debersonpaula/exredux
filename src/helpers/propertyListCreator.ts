@@ -18,9 +18,17 @@ export function extractObjectProperties<T>(target: Object, metaname: string | sy
   return Reflect.getMetadata(metaname, target) || {};
 }
 
-export function extractObjectList<T>(target: Object, metaname: string | symbol): T[] {
+export function extractObjectList<T>(target: object, metaname: string | symbol, typeName: 'function' | 'object'): T[] {
   const metadataList = extractObjectProperties<T>(target, metaname);
-  return Object.keys(metadataList).map(key => metadataList[key]);
+  const result = [];
+
+  for (const key in metadataList) {
+    if (target.hasOwnProperty(key) || typeof target[key] === typeName) {
+      result.push(metadataList[key]);
+    }
+  }
+
+  return result;
 }
 
 type MetaList<T> = { [key: string]: T };

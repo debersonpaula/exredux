@@ -6,10 +6,7 @@ import { DECORATOR_TRIGGER } from '../interfaces/Symbols';
 // ----------------------------------------------------------------------------
 // --- DECORATOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------
-export const Trigger = (listenToMethod: string, listenToModel?: IType<any>): MethodDecorator => (
-  target,
-  propertyKey
-) => {
+export const Trigger = (listenToMethod: string, listenToModel?: IType<any>): MethodDecorator => (target, propertyKey) => {
   const methodName = propertyKey.toString();
 
   createObjectProperties<ITrigger>(target, DECORATOR_TRIGGER, methodName, {
@@ -23,7 +20,7 @@ export const Trigger = (listenToMethod: string, listenToModel?: IType<any>): Met
 // --- EXTRACTOR --------------------------------------------------------------
 // ----------------------------------------------------------------------------
 export function getTrigger(target: Object): ITrigger[] {
-  return extractObjectList(target, DECORATOR_TRIGGER);
+  return extractObjectList(target, DECORATOR_TRIGGER, 'function');
 }
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
