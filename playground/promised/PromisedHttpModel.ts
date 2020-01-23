@@ -1,11 +1,10 @@
-import { Model, Action, BaseHttpModel, http } from 'exredux';
+import { Action, BaseHttpModel, http } from 'exredux';
 
 // mocking http promise request
 const promiseResolve = () => http.get('https://reqres.in/api/unknown/2');
 
-const promiseReject = () => http.get('https://reqres.in/api/unknown/23')
+const promiseReject = () => http.get('https://reqres.in/api/unknown/23');
 
-@Model
 export class PromisedHttpModel extends BaseHttpModel<any> {
   @Action getDone() {
     this.request(promiseResolve());

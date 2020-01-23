@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Connection, Inject } from 'exredux';
-import { appModels } from '../AppModels';
 import { PromisedModel } from './PromisedModel';
 import { PromisedHttpModel } from './PromisedHttpModel';
 
@@ -9,21 +8,26 @@ class ModelProps {
   @Inject promisedHttpModel?: PromisedHttpModel;
 }
 
-@Connection({
-  modelStore: appModels,
-  props: ModelProps
-})
+@Connection(ModelProps)
 export class Promised extends React.Component<ModelProps> {
   render() {
     const { promisedModel, promisedHttpModel } = this.props;
     return (
       <div>
-        <button onClick={this.handleClick} id="promise-done">Promise Done</button>
-        <button onClick={this.handleClickError} id="promise-fail">Promise Fail</button>
+        <button onClick={this.handleClick} id="promise-done">
+          Promise Done
+        </button>
+        <button onClick={this.handleClickError} id="promise-fail">
+          Promise Fail
+        </button>
         <button onClick={this.handleReset}>ResetState</button>
 
-        {promisedModel.isCompleted ? <p id="promise-done-result">From Promise model => {promisedModel.response}</p> : null}
-        {promisedModel.isFailed ? <p id="promise-fail-result">Error From Promise model => {promisedModel.error}</p> : null}
+        {promisedModel.isCompleted ? (
+          <p id="promise-done-result">From Promise model => {promisedModel.response}</p>
+        ) : null}
+        {promisedModel.isFailed ? (
+          <p id="promise-fail-result">Error From Promise model => {promisedModel.error}</p>
+        ) : null}
         {promisedModel.isLoading ? <p>Promise Loading...</p> : null}
 
         <hr />
@@ -32,8 +36,12 @@ export class Promised extends React.Component<ModelProps> {
         <button onClick={this.handleClickErrorHttp}>Http Fail</button>
         <button onClick={this.handleResetHttp}>ResetState</button>
 
-        {promisedHttpModel.isCompleted ? <p>From http model => {JSON.stringify(promisedHttpModel.response.data)}</p> : null}
-        {promisedHttpModel.isFailed ? <p>Error From http model. Error status = {promisedHttpModel.error.response.status}</p> : null}
+        {promisedHttpModel.isCompleted ? (
+          <p>From http model => {JSON.stringify(promisedHttpModel.response.data)}</p>
+        ) : null}
+        {promisedHttpModel.isFailed ? (
+          <p>Error From http model. Error status = {promisedHttpModel.error.response.status}</p>
+        ) : null}
         {promisedHttpModel.isLoading ? <p>Http Loading...</p> : null}
       </div>
     );
