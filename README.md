@@ -2,7 +2,7 @@
 
 Are u tired to create a lot of files with constants, actions, dispatchers and reducers?
 
-**Exredux** is solution to ease your life by abstracting all react/redux logics with understable architecture.
+**Exredux** is the solution to ease your life by abstracting all react/redux logics with understable architecture.
 
 Based on library **redux-flow-mapper**, this package use decorators to create Models, Actions, Dependencies and much more.
 
