@@ -10,6 +10,8 @@ import { getAction } from '../decorators/Action';
 import { getInject } from '../decorators/Inject';
 import { getTrigger } from '../decorators/Trigger';
 
+import { breakReferences } from '../helpers/propertyListCreator';
+
 type SetStatehandler = (state: any, callback?: () => void) => void;
 
 export class Store {
@@ -27,9 +29,11 @@ export class Store {
         className: modelName,
         instance: modelInstance,
         deps: getInject(modelInstance),
-        actions: getAction(modelInstance).filter(
-          action =>
-            modelInstance.hasOwnProperty(action.methodName) || typeof modelInstance[action.methodName] === 'function'
+        actions: breakReferences(
+          getAction(modelInstance).filter(
+            action =>
+              modelInstance.hasOwnProperty(action.methodName) || typeof modelInstance[action.methodName] === 'function'
+          )
         ),
         triggers: getTrigger(modelInstance),
       };
@@ -55,15 +59,16 @@ export class Store {
 
     // create actions and triggers
     this._models.forEach(model => {
+      const modelName = model.className;
       // Action
       model.actions.forEach(action => {
-        action.modelName = model.className;
+        action.modelName = modelName;
         this._defineDispatcher(model, action);
       });
 
       // Trigger
       model.triggers.forEach(trigger => {
-        trigger.modelName = model.className;
+        trigger.modelName = modelName;
         const triggerFunction = this._defineDispatcher(model, trigger);
         const watchDispatchName = `${trigger.listenToModel ? trigger.listenToModel.name : model.className}.${
           trigger.listenToMethod
