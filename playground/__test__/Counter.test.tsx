@@ -1,55 +1,55 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import { Counter } from '../counter/Counter';
 
-import { ModelStore, Provider } from 'exredux';
+import { Provider } from 'exredux';
 import { CounterModel } from '../counter/CounterModel';
 
 describe('Counter', () => {
-  const appModels = new ModelStore({
-    devExtension: true,
-    models: [CounterModel]
-  });
-
+  const models = [CounterModel];
+  let wrapper: ReactWrapper;
   // -------------------------------------------------------
-  it('should render with content', () => {
-    // PREPARE
-    const model = appModels.modelByClass(CounterModel);
-    model.add(); // increase counter to 1
-    model.add(); // increase counter to 2
-    model.add(); // increase counter to 3
-    model.del(); // decrease counter to 2
-
-    // ACT
-    const wrapper = mount(
-      <Provider modelStore={appModels}>
+  beforeAll(() => {
+    wrapper = mount(
+      <Provider models={models}>
         <Counter />
       </Provider>
     );
+  });
+  // -------------------------------------------------------
+  afterAll(() => {
+    wrapper.unmount();
+  });
+  // -------------------------------------------------------
+  it('should increase three times', () => {
+    // PREPARE
+    const counterAdd = wrapper.find('#counter-add').first();
+
+    // ACT
+    counterAdd.simulate('click');
+    counterAdd.simulate('click');
+    counterAdd.simulate('click');
 
     // ASSERT
     expect(wrapper).toMatchSnapshot();
     expect(wrapper).toBeTruthy();
-    expect(wrapper.find('#counter-result').text()).toEqual('Counter = 2');
-    expect(wrapper.find('#action-result').text()).toEqual('Last Action = del');
+    expect(wrapper.find('#counter-result').text()).toEqual('Counter = 3');
+    expect(wrapper.find('#action-result').text()).toEqual('Last Action = add');
   });
   // -------------------------------------------------------
-  it('should render with model changed manually', () => {
+  it('should decrease two times', () => {
     // PREPARE
-    const model = appModels.modelByClass(CounterModel);
-    model.counter = 7;
-    appModels.forceUpdate(CounterModel);    
+    const counterDel = wrapper.find('#counter-del').first();
 
     // ACT
-    const wrapper = mount(
-      <Provider modelStore={appModels}>
-        <Counter />
-      </Provider>
-    );
+    counterDel.simulate('click');
+    counterDel.simulate('click');
 
     // ASSERT
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper).toBeTruthy();
-    expect(wrapper.find('#counter-result').text()).toEqual('Counter = 7');
+    expect(wrapper.find('#counter-result').text()).toEqual('Counter = 1');
+    expect(wrapper.find('#action-result').text()).toEqual('Last Action = del');
   });
   // -------------------------------------------------------
 });

@@ -17,8 +17,8 @@ export class Counter extends React.Component<Props> {
         Example of Model
         <p id="counter-result">Counter = {counterModel.counter}</p>
         <p id="action-result">Last Action = {counterModel.lastAction}</p>
-        <button onClick={counterModel.add}>Increase</button>
-        <button onClick={counterModel.del}>Decrease</button>
+        <button onClick={counterModel.add} id="counter-add">Increase</button>
+        <button onClick={counterModel.del} id="counter-del">Decrease</button>
       </div>
     );
   }
