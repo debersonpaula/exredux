@@ -64,10 +64,9 @@ The _Model_ it's a simple class with properties and methods. And values that was
 
 The reducer name will be the same as the class name.
 
-```ts
-import { Model } from 'exredux';
+Basically, the Model is only a class:
 
-@Model
+```ts
 export class CounterModel {
   counter = 0;
 }
@@ -80,9 +79,8 @@ The _Action_ it's a method decorator and acts as dispatcher for the decorated me
 Any method decored will be replaced by dispatcher function that emits an action with the name of method as type and the result of the original function, will be the payload to be stored in the reducer.
 
 ```ts
-import { Model, Action } from 'exredux';
+import { Action } from 'exredux';
 
-@Model
 export class CounterModel {
   counter = 0;
 
@@ -94,7 +92,7 @@ export class CounterModel {
 
 ## ModelStore
 
-The main component of Exredux, the ModelStore act as dependency controller.
+The instatiator class _ModelStore_ was removed and is no longer needed to create instance of store. Instead, create a constant with all needed models and use it directly in the Provider component.
 
 All models created should be listed in the models property:
 
@@ -103,17 +101,14 @@ import { ModelStore } from 'exredux';
 import { CounterModel } from './counter/CounterModel';
 import { ListDataModel } from './listdata/ListDataModel';
 
-export const appModels = new ModelStore({
-  devExtension: true, // enables redux-dev-extension for chrome
-  models: [CounterModel, ListDataModel]
-});
+export const appModels = [CounterModel, ListDataModel];
 ```
 
 Also, the variable that stores the ModelStore, must be used in the connection to provide the state and actions to the components.
 
 ## Connection
 
-The models will be available on component, thru the Connection decorator, that indicate the ModelStore and the model injection properties:
+The models will be available on component, thru the Connection decorator, that indicate the model injection properties:
 
 ```tsx
 import * as React from 'react';
@@ -127,10 +122,7 @@ class ModelProps {
 }
 
 // make connection between state and component
-@Connection({
-  modelStore: appModels, // <-- model store location
-  props: ModelProps // <-- props with model injection
-})
+@Connection(ModelProps)
 export class Counter extends React.Component<ModelProps> {
   render() {
     const { counterModel } = this.props;
@@ -151,7 +143,7 @@ These Actions are designed to be a Http-Promise based template.
 Is used Axios as http requester.
 
 ```ts
-import { Model, Action, BaseHttpModel } from 'exredux';
+import { Action, BaseHttpModel } from 'exredux';
 
 // mocking http request
 const httpDoneRequest = (label: string) =>
@@ -168,7 +160,6 @@ const httpErrorRequest = (errorMessage: string) =>
     }, 1500);
   });
 
-@Model
 export class HttpHandlerModel extends BaseHttpModel<string> {
   @Action getHttpTest(label: string) {
     this.request(httpDoneRequest(label));
@@ -198,10 +189,7 @@ class ModelProps {
   @Inject httpHandlerModel?: HttpHandlerModel;
 }
 
-@Connection({
-  modelStore: appModels,
-  props: ModelProps
-})
+@Connection(ModelProps)
 export class HttpHandler extends React.Component<ModelProps> {
   render() {
     const { httpHandlerModel } = this.props;
@@ -232,17 +220,16 @@ export class HttpHandler extends React.Component<ModelProps> {
 }
 ```
 
-Also, the class __BaseHttpModel__ inherits _responseAsync_ and _errorAsync_ from __BasePromiseModel__ that works as Observables from completed and failed (respectively) methods.
+Also, the class **BaseHttpModel** inherits _responseAsync_ and _errorAsync_ from **BasePromiseModel** that works as Observables from completed and failed (respectively) methods.
 
 ## Dependency
 
 You inject models in another models thru _Inject_ decorator:
 
 ```tsx
-import { Model, Action, Inject } from 'exredux';
+import { Action, Inject } from 'exredux';
 import { CounterModel } from 'playground/counter/CounterModel';
 
-@Model
 export class ListModel {
   items: string[] = [];
 
@@ -256,16 +243,15 @@ export class ListModel {
 }
 ```
 
-## Events
+## Triggers (local)
 
-Events are method interceptors that listen to the action completion.
+Triggers with only one parameter, is an event that interceps a listener to the action completion.
 
 And is used to listen methods inside the class.
 
 ```tsx
-import { Model, Action, Event } from 'exredux';
+import { Action, Event } from 'exredux';
 
-@Model
 export class CounterModel {
   counter = 0;
   lastAction = '';
@@ -278,36 +264,34 @@ export class CounterModel {
     this.counter -= 1;
   }
 
-  @Event('add')
+  @Trigger('add')
   lastActionAdd() {
     this.lastAction = 'add';
   }
 
-  @Event('del')
+  @Trigger('del')
   lastActionDel() {
     this.lastAction = 'del';
   }
 }
 ```
 
-## Triggers
+## Triggers (global)
 
-Triggers are similar to Event.
+Trigger global are similar to Trigger local.
 The difference it is used to trigger events from another models.
 This triggers can't be used to listen itself.
 
 ```tsx
-import { Model, Inject, Trigger } from 'exredux';
-import { CounterModel } from 'playground/counter/CounterModel';
+import { Inject, Trigger } from 'exredux';
+import { CounterModel } from '../counter/CounterModel';
 
-@Model
 export class EventsModel {
   message: string;
 
-  // dependency from another model
   @Inject counterModel: CounterModel;
 
-  @Trigger(CounterModel, 'add') checkAddCounter() {
+  @Trigger('add', CounterModel) checkAddCounter() {
     this.message = `Counter updated to = ${this.counterModel.counter}`;
   }
 }
@@ -326,10 +310,7 @@ class ModelProps {
 }
 type Props = Partial<ModelProps>;
 
-@Connection({
-  modelStore: appModels,
-  props: ModelProps
-})
+@Connection(ModelProps)
 export class Events extends React.Component<Props> {
   render() {
     const { eventsModel } = this.props;
@@ -363,7 +344,6 @@ The reducer dispatcher breaks any method or property and the React component can
 To reach the component side, use arrow function.
 
 ```ts
-@Model
 export class AvailabilityModel {
   // invisible for components
   makeSomething() {
@@ -388,7 +368,6 @@ Methods without decorate changes the state only in the class and will not be dis
 But can be used to calculate or change something until some point, and after that, call a decorated action to dispatch it to the store.
 
 ```ts
-@Model
 export class AvailabilityModel {
   // change state internally only
   changeSomething() {
@@ -407,7 +386,7 @@ export class AvailabilityModel {
 ## Provider
 
 Instead using Provide from _react-redux_, use directly from **exredux**.
-It's already provide encapsulation for the ModelStore and the redux Provider.
+It's already provide encapsulation for the React contexts.
 
 ```tsx
 import * as React from 'react';
@@ -419,7 +398,7 @@ import { Provider } from 'exredux';
 export class Sample extends React.Component {
   public render() {
     return (
-      <Provider store={appModels.createStore()}>
+      <Provider models={appModels}>
         <div>
           Test Application for ExRedux
           <hr />
