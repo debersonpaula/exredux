@@ -1,32 +1,15 @@
 import { Subject } from 'rxjs';
 import { Action } from '../decorators/Action';
 import { Trigger } from '../decorators/Trigger';
+import { IBasePromise } from './IBasePromise';
 
-export class BasePromiseModel<T, E> {
-  /**
-   * set to true when Promise is on going
-   */
-  isCompleted: boolean = false;
-
-  /**
-   * set to true when Promise is done
-   */
-  isFailed: boolean = false;
-
-  /**
-   * set to true when Promise is failed
-   */
-  isLoading: boolean = false;
-
-  /**
-   * contains the object from Axios > then
-   */
-  response?: T;
-
-  /**
-   * contains the object from Axios > catch
-   */
-  error?: E;
+export class BasePromiseModel<T, E> implements IBasePromise<T, E> {
+  isCompleted = false;
+  isFailed = false;
+  isLoading = false;
+  isFinished = false;
+  response = undefined;
+  error = undefined;
 
   /**
    * contains the object of response
@@ -41,20 +24,37 @@ export class BasePromiseModel<T, E> {
   errorAsync = new Subject<E>();
 
   /**
-   * Start the state = loading
+   * trigger everytime with the finished event
    */
+  finishAsync = new Subject<E>();
+
   @Action
-  protected loading() {
-    this.isLoading = true;
+  public reset() {
+    this.isLoading = false;
     this.isCompleted = false;
     this.isFailed = false;
     this.response = undefined;
     this.error = undefined;
   }
 
-  /**
-   * Start the state = completed
-   */
+  public request(requestPromise: Promise<T>) {
+    this.loading();
+    requestPromise
+      .then(this.completed)
+      .catch(this.failed)
+      .finally(this.finished);
+  }
+
+  @Action
+  protected loading() {
+    this.isLoading = true;
+    this.isCompleted = false;
+    this.isFailed = false;
+    this.isFinished = false;
+    this.response = undefined;
+    this.error = undefined;
+  }
+
   @Action
   protected completed(promiseResponse: T) {
     this.isLoading = false;
@@ -74,18 +74,8 @@ export class BasePromiseModel<T, E> {
   }
 
   @Action
-  protected request(httpRequest: Promise<T>) {
-    this.loading();
-    httpRequest.then(response => this.completed(response)).catch(error => this.failed(error));
-  }
-
-  @Action
-  protected resetState() {
-    this.isLoading = false;
-    this.isCompleted = false;
-    this.isFailed = false;
-    this.response = undefined;
-    this.error = undefined;
+  protected finished() {
+    this.isFinished = true;
   }
 
   @Trigger('completed')
@@ -96,5 +86,10 @@ export class BasePromiseModel<T, E> {
   @Trigger('failed')
   protected failedAsync() {
     this.errorAsync.next(this.error);
+  }
+
+  @Trigger('finished')
+  protected finishedAsync() {
+    this.finishAsync.next();
   }
 }

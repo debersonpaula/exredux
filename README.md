@@ -171,8 +171,8 @@ export class HttpHandlerModel extends BaseHttpModel<string> {
 
   // it can be used the internal method resetState
   // to clear all state data for this model
-  @Action reset() {
-    this.resetState();
+  resetThisModel() {
+    this.reset();
   }
 }
 ```
