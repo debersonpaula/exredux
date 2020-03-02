@@ -4,19 +4,24 @@ import { Trigger } from '../decorators/Trigger';
 
 export class BasePromiseModel<T, E> {
   /**
-   * set to true when Promise is on going
+   * set to true when Promise is done
    */
   isCompleted: boolean = false;
 
   /**
-   * set to true when Promise is done
+   * set to true when Promise is failed
    */
   isFailed: boolean = false;
 
   /**
-   * set to true when Promise is failed
+   * set to true when Promise is on going
    */
   isLoading: boolean = false;
+
+  /**
+   * set to true when Promise is totally completed
+   */
+  isFinished: boolean = false;
 
   /**
    * contains the object from Axios > then
@@ -41,20 +46,20 @@ export class BasePromiseModel<T, E> {
   errorAsync = new Subject<E>();
 
   /**
-   * Start the state = loading
+   * trigger everytime with the finished event
    */
+  finishAsync = new Subject<E>();
+
   @Action
   protected loading() {
     this.isLoading = true;
     this.isCompleted = false;
     this.isFailed = false;
+    this.isFinished = false;
     this.response = undefined;
     this.error = undefined;
   }
 
-  /**
-   * Start the state = completed
-   */
   @Action
   protected completed(promiseResponse: T) {
     this.isLoading = false;
@@ -74,9 +79,8 @@ export class BasePromiseModel<T, E> {
   }
 
   @Action
-  protected request(httpRequest: Promise<T>) {
-    this.loading();
-    httpRequest.then(response => this.completed(response)).catch(error => this.failed(error));
+  protected finished() {
+    this.isFinished = true;
   }
 
   @Action
@@ -88,6 +92,21 @@ export class BasePromiseModel<T, E> {
     this.error = undefined;
   }
 
+  public request(requestPromise: Promise<T>, customLoader?: ILoader<T, E>) {
+    const loader: ILoader<T, E> = customLoader || {
+      completed: this.completed,
+      failed: this.failed,
+      finished: this.finished,
+      loading: this.loading,
+    };
+
+    loader.loading && loader.loading();
+    requestPromise
+      .then(loader.completed)
+      .catch(loader.failed)
+      .finally(loader.finished);
+  }
+
   @Trigger('completed')
   protected completedAsync() {
     this.responseAsync.next(this.response);
@@ -97,4 +116,16 @@ export class BasePromiseModel<T, E> {
   protected failedAsync() {
     this.errorAsync.next(this.error);
   }
+
+  @Trigger('finished')
+  protected finishedAsync() {
+    this.finishAsync.next();
+  }
+}
+
+export interface ILoader<T, E> {
+  loading?: () => void;
+  completed?: (promiseResponse: T) => void;
+  failed?: (promiseError: E) => void;
+  finished?: () => void;
 }

@@ -1,15 +1,15 @@
-import { Action, BaseHttpModel, http } from 'exredux';
+import { BaseHttpModel, http } from 'exredux';
 
 export class PromisedHttpModel extends BaseHttpModel<any> {
-  @Action getDone() {
+  getDone() {
     this.request(http.get('https://reqres.in/api/unknown/2'));
   }
 
-  @Action getError() {
+  getError() {
     this.request(http.get('https://reqres.in/api/unknown/23'));
   }
 
-  @Action reset() {
+  reset() {
     this.resetState();
   }
 }

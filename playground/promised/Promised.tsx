@@ -32,6 +32,18 @@ export class Promised extends React.Component<ModelProps> {
 
         <hr />
 
+        <button onClick={promisedModel.getCustom} id="promise-done">
+          Promise Custom Response
+        </button>
+
+        <ul>
+          {promisedModel.messages.map((msg, index) => (
+            <li key={index}>{msg}</li>
+          ))}
+        </ul>
+
+        <hr />
+
         <button onClick={this.handleClickHttp}>Http Done</button>
         <button onClick={this.handleClickErrorHttp}>Http Fail</button>
         <button onClick={this.handleResetHttp}>ResetState</button>

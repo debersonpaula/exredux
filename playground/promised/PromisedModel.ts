@@ -1,4 +1,4 @@
-import { Action, BasePromiseModel } from 'exredux';
+import { BasePromiseModel, Action } from 'exredux';
 
 // mocking promise request
 const promiseResolve = (label: string) =>
@@ -16,15 +16,29 @@ const promiseReject = (errorMessage: string) =>
   });
 
 export class PromisedModel extends BasePromiseModel<string, string> {
-  @Action getDone(label: string) {
+  messages: string[] = [];
+
+  getDone(label: string) {
     this.request(promiseResolve(label));
   }
 
-  @Action getError(label: string) {
+  getError(label: string) {
     this.request(promiseReject(label));
   }
 
-  @Action reset() {
+  getCustom = () => {
+    this.request(promiseResolve('TESTING CUSTOM'), {
+      finished: () => this.changeMessage('FINISHED'),
+      loading: () => this.changeMessage('LOADING'),
+      completed: res => this.changeMessage(`COMPLETED, RESPONDE = ${res}`),
+    });
+  };
+
+  reset() {
     this.resetState();
+  }
+
+  @Action changeMessage(message: string) {
+    this.messages.push(message);
   }
 }
