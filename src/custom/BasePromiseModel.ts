@@ -1,37 +1,15 @@
 import { Subject } from 'rxjs';
 import { Action } from '../decorators/Action';
 import { Trigger } from '../decorators/Trigger';
+import { IBasePromise } from './IBasePromise';
 
-export class BasePromiseModel<T, E> {
-  /**
-   * set to true when Promise is done
-   */
-  isCompleted: boolean = false;
-
-  /**
-   * set to true when Promise is failed
-   */
-  isFailed: boolean = false;
-
-  /**
-   * set to true when Promise is on going
-   */
-  isLoading: boolean = false;
-
-  /**
-   * set to true when Promise is totally completed
-   */
-  isFinished: boolean = false;
-
-  /**
-   * contains the object from Axios > then
-   */
-  response?: T;
-
-  /**
-   * contains the object from Axios > catch
-   */
-  error?: E;
+export class BasePromiseModel<T, E> implements IBasePromise<T, E> {
+  isCompleted = false;
+  isFailed = false;
+  isLoading = false;
+  isFinished = false;
+  response = undefined;
+  error = undefined;
 
   /**
    * contains the object of response
@@ -49,6 +27,23 @@ export class BasePromiseModel<T, E> {
    * trigger everytime with the finished event
    */
   finishAsync = new Subject<E>();
+
+  @Action
+  public reset() {
+    this.isLoading = false;
+    this.isCompleted = false;
+    this.isFailed = false;
+    this.response = undefined;
+    this.error = undefined;
+  }
+
+  public request(requestPromise: Promise<T>) {
+    this.loading();
+    requestPromise
+      .then(this.completed)
+      .catch(this.failed)
+      .finally(this.finished);
+  }
 
   @Action
   protected loading() {
@@ -83,30 +78,6 @@ export class BasePromiseModel<T, E> {
     this.isFinished = true;
   }
 
-  @Action
-  protected resetState() {
-    this.isLoading = false;
-    this.isCompleted = false;
-    this.isFailed = false;
-    this.response = undefined;
-    this.error = undefined;
-  }
-
-  public request(requestPromise: Promise<T>, customLoader?: ILoader<T, E>) {
-    const loader: ILoader<T, E> = customLoader || {
-      completed: this.completed,
-      failed: this.failed,
-      finished: this.finished,
-      loading: this.loading,
-    };
-
-    loader.loading && loader.loading();
-    requestPromise
-      .then(loader.completed)
-      .catch(loader.failed)
-      .finally(loader.finished);
-  }
-
   @Trigger('completed')
   protected completedAsync() {
     this.responseAsync.next(this.response);
@@ -121,11 +92,4 @@ export class BasePromiseModel<T, E> {
   protected finishedAsync() {
     this.finishAsync.next();
   }
-}
-
-export interface ILoader<T, E> {
-  loading?: () => void;
-  completed?: (promiseResponse: T) => void;
-  failed?: (promiseError: E) => void;
-  finished?: () => void;
 }

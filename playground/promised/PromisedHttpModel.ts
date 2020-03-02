@@ -8,8 +8,4 @@ export class PromisedHttpModel extends BaseHttpModel<any> {
   getError() {
     this.request(http.get('https://reqres.in/api/unknown/23'));
   }
-
-  reset() {
-    this.resetState();
-  }
 }
