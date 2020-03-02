@@ -38,7 +38,7 @@ export class App extends React.Component {
         >
           <div>
             <hr />
-            <h2>Test Application for ExRedux - App {this.props.label}</h2>
+            <h2>Test Application for ExRedux</h2>
             <hr />
             <Counter />
             <hr />
