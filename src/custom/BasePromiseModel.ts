@@ -8,8 +8,8 @@ export class BasePromiseModel<T, E> implements IBasePromise<T, E> {
   isFailed = false;
   isLoading = false;
   isFinished = false;
-  response = undefined;
-  error = undefined;
+  response: T = null;
+  error: E = null;
 
   /**
    * contains the object of response

@@ -1,6 +1,6 @@
 {
   "name": "exredux",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "React-Redux Model Store Library",
   "main": "index.js",
   "scripts": {
