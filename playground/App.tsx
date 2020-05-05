@@ -19,6 +19,7 @@ import { MasterComponent } from './subcomponents/MasterComponent';
 import { InheritedComponent } from './inheritance/InheritedComponent';
 import { PromisedMultipleModel } from './promisedMultiple/PromisedMultipleModel';
 import { PromisedMultiple } from './promisedMultiple/PromisedMultiple';
+import { MultiProvider } from './multi-provider/MultiProvider';
 
 export class App extends React.Component {
   public render() {
@@ -56,9 +57,11 @@ export class App extends React.Component {
             <InheritedComponent />
             <hr />
             <PromisedMultiple />
-            {this.props.children}
           </div>
         </Provider>
+
+        <hr />
+        <MultiProvider />
       </HashRouter>
     );
   }
