@@ -1,20 +1,8 @@
 {
+  "extends": "./node_modules/tsrx/tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/",
-    "strict": false,
-    "sourceMap": true,
-    "declaration": true,
-    "moduleResolution": "node",
-    "noImplicitAny": false,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "module": "commonjs",
-    "target": "es5",
-    "lib": ["es5", "es2015", "es6", "dom"],
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "outDir": "dist",
     "paths": {
       "exredux": ["src"]
     }
