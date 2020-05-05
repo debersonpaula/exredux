@@ -1,13 +1,9 @@
 import * as React from 'react';
-import { Connection, Inject } from 'exredux';
-import { PromisedMultipleModel } from './PromisedMultipleModel';
+import { Connection } from 'exredux';
+import { PromisedMultipleProps } from './PromisedMultipleProps';
 
-class ModelProps {
-  @Inject promised?: PromisedMultipleModel;
-}
-
-@Connection(ModelProps)
-export class PromisedMultiple extends React.Component<ModelProps> {
+@Connection(PromisedMultipleProps)
+export class PromisedMultiple extends React.Component<PromisedMultipleProps> {
   render() {
     const { promised } = this.props;
     return (
@@ -22,8 +18,6 @@ export class PromisedMultiple extends React.Component<ModelProps> {
 
         {promised.model2.isCompleted && <p>{promised.model2.response}</p>}
         {promised.model2.isLoading && <p>Model2 loading...</p>}
-
-        <hr />
       </div>
     );
   }
