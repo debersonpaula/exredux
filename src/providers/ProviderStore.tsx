@@ -5,17 +5,24 @@ import { Store } from './Store';
 
 export class ProviderStore extends React.Component<IProvider, IModels> {
   state: IModels = {};
+  store: Store;
 
   constructor(props: IProvider) {
     super(props);
     if (props.models && props.models.length) {
-      const store = new Store(props.models, this.updateStore);
-      this.state = store.modelState;
+      this.store = new Store(props.models, this.updateStore);
+      this.state = this.store.modelState;
     }
   }
 
   render() {
     return <ContextHandler.Provider value={this.state}>{this.props.children}</ContextHandler.Provider>;
+  }
+
+  componentWillUnmount() {
+    if (this.store) {
+      this.store.destroy();
+    }
   }
 
   private updateStore = (state: any, cb: any) => {
