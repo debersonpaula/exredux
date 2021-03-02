@@ -19,6 +19,7 @@ export class Store {
   private _models: IModel[];
   private _actionListener = new Subject<IDispatchValues>();
   private _setState: SetStatehandler;
+  private _destroyed: boolean = false;
 
   constructor(models: IType<any>[], setState: SetStatehandler) {
     this._setState = setState;
@@ -87,6 +88,7 @@ export class Store {
   }
 
   public destroy() {
+    this._destroyed = true;
     this._actionListener.unsubscribe();
   }
 
@@ -104,6 +106,9 @@ export class Store {
 
     // associate action dispatcher
     const dipatcherHandler = (...args: any) => {
+      if (this._destroyed) {
+        return;
+      }
       // call current handler with model
       // in this parameter
       try {
