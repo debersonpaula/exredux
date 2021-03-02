@@ -19,11 +19,12 @@ export class Store {
   private _models: IModel[];
   private _actionListener = new Subject<IDispatchValues>();
   private _setState: SetStatehandler;
+  private _destroyed: boolean = false;
 
   constructor(models: IType<any>[], setState: SetStatehandler) {
     this._setState = setState;
 
-    this._models = models.map(modelCtor => {
+    this._models = models.map((modelCtor) => {
       const modelName = modelCtor.name;
       const modelInstance = new modelCtor();
       const model: IModel = {
@@ -38,8 +39,8 @@ export class Store {
     });
 
     // resolve dependencies
-    this._models.forEach(model => {
-      model.deps.map(dep => {
+    this._models.forEach((model) => {
+      model.deps.map((dep) => {
         const depComponent = this._models.find((item, index) => {
           if (!item) {
             throw new Error(`ModelStore Error: item number=${index} in the model list is undefined`);
@@ -48,7 +49,7 @@ export class Store {
         });
         if (!depComponent) {
           throw new Error(
-            `Dependency ${dep.typeName} is injected in ${model.className} thru property ${dep.propertyName} but is not found in model store.`
+            `Dependency ${dep.typeName} is injected in ${model.className} thru property ${dep.propertyName} but is not found in model store.`,
           );
         }
         model.instance[dep.propertyName] = depComponent.instance;
@@ -56,16 +57,16 @@ export class Store {
     });
 
     // create actions and triggers
-    this._models.forEach(model => {
+    this._models.forEach((model) => {
       const modelName = model.className;
       // Action
-      model.actions.forEach(action => {
+      model.actions.forEach((action) => {
         action.modelName = modelName;
         this._defineDispatcher(model, action);
       });
 
       // Trigger
-      model.triggers.forEach(trigger => {
+      model.triggers.forEach((trigger) => {
         trigger.modelName = modelName;
         const triggerFunction = this._defineDispatcher(model, trigger);
         const watchDispatchName = `${trigger.listenToModel ? trigger.listenToModel.name : model.className}.${
@@ -73,7 +74,7 @@ export class Store {
         }`;
 
         // listen to subject "_actionListener"
-        this._actionListener.subscribe(obj => {
+        this._actionListener.subscribe((obj) => {
           if (obj !== null) {
             // check if the name matches
             if (`${obj.action.modelName}.${obj.action.methodName}` === watchDispatchName) {
@@ -84,6 +85,11 @@ export class Store {
         });
       });
     });
+  }
+
+  public destroy() {
+    this._destroyed = true;
+    this._actionListener.unsubscribe();
   }
 
   public get modelState() {
@@ -100,6 +106,9 @@ export class Store {
 
     // associate action dispatcher
     const dipatcherHandler = (...args: any) => {
+      if (this._destroyed) {
+        return;
+      }
       // call current handler with model
       // in this parameter
       try {
@@ -111,7 +120,11 @@ export class Store {
           this._broadcast(action, model.instance);
         });
       } catch (error) {
-        const obj = { routine: '_defineDispatcher', method: action.methodName, modelName: model.className };
+        const obj = {
+          routine: '_defineDispatcher',
+          method: action.methodName,
+          modelName: model.className,
+        };
         logger.error('EXREDUX ERROR: _defineDispatcher', obj, error);
       }
     };
