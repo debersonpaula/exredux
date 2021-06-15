@@ -19,6 +19,7 @@ import { MasterComponent } from './subcomponents/MasterComponent';
 import { InheritedComponent } from './inheritance/InheritedComponent';
 import { PromisedMultipleModel } from './promisedMultiple/PromisedMultipleModel';
 import { PromisedMultiple } from './promisedMultiple/PromisedMultiple';
+import { IsolatedProvider } from './isolated-provider/IsolatedProvider';
 
 export class App extends React.Component {
   public render() {
@@ -56,6 +57,8 @@ export class App extends React.Component {
             <InheritedComponent />
             <hr />
             <PromisedMultiple />
+            <hr />
+            <IsolatedProvider />
             {this.props.children}
           </div>
         </Provider>
